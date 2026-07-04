@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react'
 import LiveMarkets from './assets/components/LiveMarkets'
 import CheckRate from './assets/components/CheckRate'
+import CheckRateBox from './assets/components/CheckRate'
 
 function App() {
   let [size, setSize] = useState(null)
   let [countryAbre, setCountryAbre] = useState(null)
+  let [countryNames, setCountryNames] = useState(null)
+
   useEffect(() => {
-    async function getMarkets() {
-      const res1 = await fetch(
-        "https://api.frankfurter.dev/v1/latest?base=USD"
+    async function getCurrenciesList() {
+      const name_res = await fetch(
+        "https://api.frankfurter.dev/v1/currencies"
       );
 
-      const today = await res1.json();
+      const countryList = await name_res.json()
       
-      const size = Object.keys(today.rates).length;
-      setCountryAbre(Object.keys(today.rates))
-      
-      setSize(size)
+      setCountryAbre(Object.keys(countryList))
+      setCountryNames(countryList)
+      setSize(Object.keys(countryList).length)            
     }
-    getMarkets()
+    getCurrenciesList()
   }, [])
  
   return (
@@ -39,7 +41,7 @@ function App() {
         </section>
 
         <main>
-          <CheckRate countries={countryAbre} />
+          <CheckRateBox countries={countryAbre} countryNames={countryNames} />
         </main>
       </div>
     </>
