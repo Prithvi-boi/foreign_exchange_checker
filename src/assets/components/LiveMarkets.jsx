@@ -11,7 +11,6 @@ function LiveMarkets() {
     "GBP",
   ];
 
-
   useEffect(() => {
     async function getMarkets() {
       const res1 = await fetch(
@@ -63,7 +62,6 @@ function LiveMarkets() {
                 </p>
               </div>
             )})}
-
         </div>
       </div>
     </>

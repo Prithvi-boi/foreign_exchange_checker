@@ -4,10 +4,11 @@ import CheckRate from './assets/components/CheckRate'
 import CheckRateBox from './assets/components/CheckRate'
 
 function App() {
-  let [size, setSize] = useState(null)
-  let [countryAbre, setCountryAbre] = useState(null)
+  let [size, setSize]                 = useState(null)
+  let [countryAbre, setCountryAbre]   = useState(null)
   let [countryNames, setCountryNames] = useState(null)
-
+  let [unselect, setUnselect]         = useState(true)
+  
   useEffect(() => {
     async function getCurrenciesList() {
       const name_res = await fetch(
@@ -25,8 +26,7 @@ function App() {
  
   return (
     <>
-      <div className='h-dvh w-dvw bg-[#0A0A0A]'>
-
+      <div onClick={() => unselect ? setUnselect(false) : setUnselect(true)} className='h-dvh w-dvw bg-[#0A0A0A]'>
         <header>
           <div className='flex items-center justify-between shrink-0 p-3'>
             <img className='h-6' src="/src/assets/images/logo.svg" alt="Fx checker logo" />
@@ -41,7 +41,7 @@ function App() {
         </section>
 
         <main>
-          <CheckRateBox countries={countryAbre} countryNames={countryNames} />
+          <CheckRateBox countries={countryAbre} countryNames={countryNames} unselected={unselect} />
         </main>
       </div>
     </>
