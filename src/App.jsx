@@ -8,6 +8,9 @@ function App() {
   let [countryAbre, setCountryAbre]   = useState(null)
   let [countryNames, setCountryNames] = useState(null)
   let [unselect, setUnselect]         = useState(true)
+  let [base, setBASE]                 = useState('USD')
+  let [todaysData, settodaysData]     = useState('INR')
+
   
   useEffect(() => {
     async function getCurrenciesList() {
@@ -23,6 +26,14 @@ function App() {
     }
     getCurrenciesList()
   }, [])
+
+  const handleCurChangetoMe = (currency) => {
+      setBASE(currency)
+  };
+
+  const GetTodaysData = (data) =>{
+    settodaysData(data)
+  }
  
   return (
     <>
@@ -37,11 +48,11 @@ function App() {
         </header>
 
         <section>
-          <LiveMarkets />
+          <LiveMarkets BASE={base} sendDatatoAPP={GetTodaysData}/>
         </section>
 
         <main>
-          <CheckRateBox countries={countryAbre} countryNames={countryNames} unselected={unselect} />
+          <CheckRateBox todaysData={todaysData} onCurChangetoApp={handleCurChangetoMe} countries={countryAbre} countryNames={countryNames} unselected={unselect} />
         </main>
       </div>
     </>

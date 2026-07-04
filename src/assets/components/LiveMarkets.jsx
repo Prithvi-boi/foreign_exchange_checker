@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function LiveMarkets() {
+function LiveMarkets({BASE, sendDatatoAPP}) {
   const date = new Date()
   const [rate, setRate] = useState(null);
   const pairs = [
@@ -14,15 +14,16 @@ function LiveMarkets() {
   useEffect(() => {
     async function getMarkets() {
       const res1 = await fetch(
-        "https://api.frankfurter.dev/v1/latest?base=USD"
+        `https://api.frankfurter.dev/v1/latest?base=${BASE}`
       );
 
       const res2 = await fetch(
-        `https://api.frankfurter.dev/v1/2026-07-${String(date.getDate() - 2).padStart(2, "0")}?base=USD`
+        `https://api.frankfurter.dev/v1/2026-07-${String(date.getDate() - 2).padStart(2, "0")}?base=${BASE}`
       );
 
       const today = await res1.json();
       const yesterday = await res2.json();
+      sendDatatoAPP(today)
 
       const markets = pairs.map((pair) => {
         const current = today.rates[pair];
@@ -31,7 +32,7 @@ function LiveMarkets() {
         const percentChange = (change / previous) * 100;
 
         return {
-          pair: `USD/${pair}`,
+          pair: `${BASE}/${pair}`,
           current,
           previous,
           percentChange,
@@ -42,7 +43,7 @@ function LiveMarkets() {
     }
 
     getMarkets();
-  }, []);
+  }, [BASE]);
 
   return (
     <>
@@ -55,7 +56,7 @@ function LiveMarkets() {
             return (
               <div key={r.pair} className='shrink-0 h-full p-2 border-r-2 border-[#2E2E2E] ml-1 text-[#9D9D9D] flex items-center gap-3'>
                 <h3>{r.pair}</h3>
-                <p className='text-white'>{r.current.toFixed(2)}</p>
+                <p className='text-white'>{r.current?.toFixed(2)}</p>
                 <p className={r.percentChange >= 0 ? "text-green-500" : "text-red-500"}>
                   {r.percentChange >= 0 ? "▲" : "▼"}{" "}
                   {Math.abs(r.percentChange).toFixed(2)}%
