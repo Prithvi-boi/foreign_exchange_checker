@@ -29,14 +29,14 @@ function CheckRate(
 
     return (
         <>
-            <div className='flex flex-col justify-evenly p-3 h-30 w-full bg-[#202022] border-2 border-[#2E2E2E] rounded-2xl'>
+            <div className='grid-cols-1 grid-rows-[1fr_3fr] grid p-3 h-30 w-full bg-[#202022] border-2 border-[#2E2E2E] rounded-2xl'>
                 <h3 className='text-[#C6C6C6]'>{title}</h3>
 
-                <div className='flex items-center justify-between'>
+                <div className='grid grid-cols-[1fr_1rem_8rem]'>
 
                     {/* Input Number box */}
-                    {title == 'SEND' && <input placeholder="0.00" onChange={(e) => { receiveAmtData(e.target.value) }} className="w-45 text-4xl outline-0" type="number" />}
-                    {title == 'RECEIVE' && <div style={{ color: num_color }} className="overflow-x-scroll overflow-y-hidden w-45 text-4xl scrollbar-none">{receiveAmtData}</div>}
+                    {title == 'SEND' && <input placeholder="0.00" onChange={(e) => { receiveAmtData(e.target.value) }} className="mr-auto my-auto w-full text-4xl outline-0" type="number" onWheel={(e) => (e) => e.currentTarget.blur()} />}
+                    {title == 'RECEIVE' && <div style={{ color: num_color }} className="mr-auto my-auto overflow-x-scroll overflow-y-hidden w-full text-4xl scrollbar-none">{receiveAmtData}</div>}
 
                     {/* Dropdown + Search */}
                     <Dropdown
@@ -82,55 +82,59 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
 
     return (
         <>
-        <div className='flex flex-col gap-4 items-center justify-evenly mx-4 p-3 w-[calc(90%-0,5rem)] bg-[#171719] rounded-2xl'>
-                <CheckRate 
-                    title={"SEND"} 
-                    default_currency={"USD"} 
-                    default_flag={'/src/assets/images/flags/us.webp'} 
-                    default_BASE={currentBASE} // [1]> send default base to Checkrate
+        <h1 className='mt-4 text-xl row-start-1 col-start-2'>CHECK THE RATE</h1>
+        <div className='w-full grid grid-cols-[1rem_1fr_1rem] grid-rows-[2fr_2.5rem_6rem] sm:grid-rows-[2fr_2.5rem_3rem] row-start-2 col-start-2 p-3 bg-[#171719] rounded-2xl'>
+                <section className="row-start-1 col-start-2 flex flex-col sm:flex-row items-center gap-5">
+                    <CheckRate
+                        title={"SEND"}
+                        default_currency={"USD"}
+                        default_flag={'/src/assets/images/flags/us.webp'}
+                        default_BASE={currentBASE} // [1]> send default base to Checkrate
 
-                    countryNames={countryNames} 
-                    countriesList={countries}
-                    unselected={unselected} 
+                        countryNames={countryNames}
+                        countriesList={countries}
+                        unselected={unselected}
 
-                    receiveAmtData={receiveAmtData}
-                    rateData={Reciever_rate} 
-                    exchangeVar={exchange} 
-                    CallbackTo_CkRateLayout={handleBasetoApp}
-                />
-                
-                <Shuffle ex={exchange} callback={CallbackFrom_Shuffle} base={currentBASE} rcve={currentRCVE} />
+                        receiveAmtData={receiveAmtData}
+                        rateData={Reciever_rate}
+                        exchangeVar={exchange}
+                        CallbackTo_CkRateLayout={handleBasetoApp}
+                    />
 
-                <CheckRate 
-                    title={"RECEIVE"} 
-                    num_color={"#CEF739"} 
-                    default_currency={"INR"} 
-                    default_flag={'/src/assets/images/flags/in.webp'} 
-                    default_BASE={currentRCVE}
+                    <Shuffle ex={exchange} callback={CallbackFrom_Shuffle} base={currentBASE} rcve={currentRCVE} />
 
-                    countryNames={countryNames} 
-                    countriesList={countries} 
-                    unselected={unselected}
+                    <CheckRate
+                        title={"RECEIVE"}
+                        num_color={"#CEF739"}
+                        default_currency={"INR"}
+                        default_flag={'/src/assets/images/flags/in.webp'}
+                        default_BASE={currentRCVE}
 
-                    receiveAmtData={convertedAmount == 0 ? '0.00' : convertedAmount}
-                    rateData={Reciever_rate}
-                    exchangeVar={exchange} 
-                    CallbackTo_CkRateLayout={getRCVEfromDropBOX} 
-                />
+                        countryNames={countryNames}
+                        countriesList={countries}
+                        unselected={unselected}
 
-                <hr className='h-[0.1px] w-full border-[#222222] border-dashed border-t-2' />
+                        receiveAmtData={convertedAmount == 0 ? '0.00' : convertedAmount}
+                        rateData={Reciever_rate}
+                        exchangeVar={exchange}
+                        CallbackTo_CkRateLayout={getRCVEfromDropBOX}
+                    />
+                </section>
 
-                <p className='text-[0.8rem]'> 1 {currentBASE} = {Reciever_rate || 1} {currentRCVE}</p>
-                <div className='flex gap-4'>
-                    <button className='flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
-                        <img src={starFilledIcon} alt="star emoji" />
-                        <p className='text-[0.8rem]'>FAVORITED</p>
-                    </button>
+                <hr className='m-auto row-start-2 col-start-2 h-[0.1px] w-full border-[#222222] border-dashed border-t-2' />
+                <section className="sm:flex-row flex flex-col justify-center items-center gap-4 row-start-3 col-start-2">
+                    <p className='text-[0.8rem]'> 1 {currentBASE} = {Reciever_rate || 1} {currentRCVE}</p>
+                    <div className='sm:ml-auto flex gap-4'>
+                        <button className='flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
+                            <img src={starFilledIcon} alt="star emoji" />
+                            <p className='text-[0.8rem]'>FAVORITED</p>
+                        </button>
 
-                    <button className='flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
-                        <p className='text-[0.8rem]'>LOG CONVERSATION</p>
-                    </button>
-                </div>
+                        <button className='flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
+                            <p className='text-[0.8rem]'>LOG CONVERSATION</p>
+                        </button>
+                    </div>
+                </section>
         </div>
         </>
     )

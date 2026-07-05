@@ -47,8 +47,7 @@ function App() {
           />
         </section>
 
-        <main>
-          <h1 className='mt-4 p-4 text-xl'>CHECK THE RATE</h1>
+        <main className='grid grid-cols-[20px_1fr_20px] lg:grid-cols-[120px_1fr_120px] grid-rows-[60px_1fr]'>
           <CheckRate_layout 
               countries={currencyAbrev} 
               countryNames={currencyNames} 
