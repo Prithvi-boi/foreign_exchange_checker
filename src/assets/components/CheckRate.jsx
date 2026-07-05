@@ -83,7 +83,7 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
     return (
         <>
         <h1 className='mt-4 text-xl row-start-1 col-start-2'>CHECK THE RATE</h1>
-        <div className='w-full grid grid-cols-[1rem_1fr_1rem] grid-rows-[2fr_2.5rem_6rem] sm:grid-rows-[2fr_2.5rem_3rem] row-start-2 col-start-2 p-3 bg-[#171719] rounded-2xl'>
+        <div className='w-full grid grid-cols-[0.9rem_1fr_0.9rem] grid-rows-[2fr_2.5rem_6rem] sm:grid-rows-[2fr_2.5rem_3rem] row-start-2 col-start-2 p-3 bg-[#171719] rounded-2xl'>
                 <section className="row-start-1 col-start-2 flex flex-col sm:flex-row items-center gap-5">
                     <CheckRate
                         title={"SEND"}
