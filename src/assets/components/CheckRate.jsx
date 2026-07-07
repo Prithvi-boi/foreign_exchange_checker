@@ -76,7 +76,7 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
     const receiveAmtData = (amt) => {setreceiveAmt(Number(amt))}
     // [6]> send selected currency (BASE) to App and Changes its own BASE
     const handleBasetoApp = (currency) => {
-        CallbackFrom_Cklayout(currency)
+        CallbackFrom_Cklayout(currency, currentRCVE)
         setcurrentBASE(currency)
     }; 
     const getRCVEfromDropBOX = (currency) => {setcurrentRCVE(currency)};

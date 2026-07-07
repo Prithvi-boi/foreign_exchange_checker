@@ -3,7 +3,7 @@ import Downarrow from '/src/assets/images/icon-arrow-down.svg'
 
 function TabsMenu({Callback, TabOptions, default_tabs}) {
   let [dropDown, setDropdown] = useState(false)
-  let [TabHeading, setTabHeadind] = useState(default_tabs['Heading'])
+  let [TabHeading, setTabHeadind] = useState(default_tabs)
   const ToggleDropdown = (option) =>{
     dropDown ? setDropdown(false) : setDropdown(true)
     if (option) {

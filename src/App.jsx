@@ -16,12 +16,14 @@ function App() {
 
   let [unselect, setUnselect] = useState(true)
   let [base, setBASE] = useState('USD')
+  let [pair, setpair] = useState(['USD','INR'])
   let [todaysData, settodaysData] = useState('INR')
+  let [rangedata, setRangedata] = useState({})
 
-  const getRates_Today = (data) => { settodaysData(data) }; // 3. getting rates of today from getRatesFromMarket- callback3
+  const getRates_Today = (data, rates_ranges) => { settodaysData(data) , setRangedata(rates_ranges) }; // 3. getting rates of today from getRatesFromMarket- callback3
   // [7]> Set selected currency (BASE)
-  const handleBASEchange = (currency) => { setBASE(currency) };
-
+  const handleCurrencyChange = (bse, rve) => { setBASE(bse) ,setpair([bse,rve]) };
+  
   // fetch currencies only once using useEffect hook
   useEffect(() => {
     async function get_CurrenciesList() {
@@ -35,22 +37,16 @@ function App() {
     get_CurrenciesList()
   }, [])
 
-  const tabs = new Map([
-    ['Default', ["HISTORY",<History/>]],
-    ['HISTORY', <History />],
-    ['COMPARE', <Compare />],
-    ['LOGS', <Logs />],
-    ['FAVORITES', <Favorites />],
-  ]);
-  const options = [...tabs.keys()].filter((val)=> val != 'Default')
-  
-  const default_tabs = {
-    Heading : [...tabs.values()][0][0], 
-    Component : [...tabs.values()][0][1]
-  }
+  const [selectedTab, setSelectedTab] = useState("HISTORY");
+  const options = [
+    "HISTORY",
+    "COMPARE",
+    "LOGS",
+    "FAVORITES",
+  ];
 
-  const [Tab, setTab] = useState(default_tabs['Component']);
-  const CallbackFrom_Tabs = (option) => setTab(tabs.get(option));
+  const CallbackFrom_Tabs = (option) => {setSelectedTab(option)};
+  const [tabID, setTabID] = useState('1D')
 
   return (
     <>
@@ -67,6 +63,7 @@ function App() {
           <LiveMarkets
             BASE={base} // [8]> Send new currency (BASE) to Live Market
             getRatesFromMarket={getRates_Today} // 2. getting rates of today from LiveMarket.jsx - callback2
+            tabID={tabID}
           />
         </section>
 
@@ -76,15 +73,18 @@ function App() {
             countryNames={currencyNames}
             unselected={unselect}
             ratesOftoday={todaysData} // 4. sending rates of today to CheckRateBox- props1
-            CallbackFrom_Cklayout={handleBASEchange}
+            CallbackFrom_Cklayout={handleCurrencyChange}
           />
 
           <nav className='col-start-2 h-14'>
-            <TabsMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={default_tabs} />
+            <TabsMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
           </nav>
 
           <section className='col-start-2'>
-            {Tab}
+            {selectedTab === "HISTORY" && (<History rangedata={rangedata} Currency_pairs={pair} callbackFrom_History={(val) => {setTabID(val)}} />)}
+            {selectedTab === "COMPARE" && <Compare />}
+            {selectedTab === "LOGS" && <Logs />}
+            {selectedTab === "FAVORITES" && <Favorites />}
           </section>
 
           <footer className='col-start-2 h-10 w-full text-zinc-700 uppercase text-sm'> 

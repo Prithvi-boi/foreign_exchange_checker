@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 
-function LiveMarkets({BASE, getRatesFromMarket}) {
+function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
+  const [TabDateRange, setTabDateRange] = useState(tabID)
+  useEffect(()=>{
+    setTabDateRange(tabID)
+  },[tabID])
+
   const [rates, setRate] = useState(null);
   const popular_pairs = [
     "JPY",
@@ -11,16 +16,57 @@ function LiveMarkets({BASE, getRatesFromMarket}) {
   ];
 
   // Usefull range comparison in future implementation
-  const start = new Date();
-  const end = new Date();
-  start.setDate(end.getDate() - 7);
+  const today = new Date();
+  const ranges = {
+    "1D": 1,
+    "1W": 7,
+    "1M": 1,
+    "3M": 3,
+    "1Y": 1,
+    "5Y": 5,
+  };
 
-  const endDate = end.toISOString().split("T")[0];
-  const startDate = start.toISOString().split("T")[0];
+  function getDateRange(range) {
+    const end = new Date(today);
+    const start = new Date(today);
+
+    switch (range) {
+      case "1D":
+        start.setDate(start.getDate() - 1);
+        break;
+
+      case "1W":
+        start.setDate(start.getDate() - 7);
+        break;
+
+      case "1M":
+        start.setMonth(start.getMonth() - 1);
+        break;
+
+      case "3M":
+        start.setMonth(start.getMonth() - 3);
+        break;
+
+      case "1Y":
+        start.setFullYear(start.getFullYear() - 1);
+        break;
+
+      case "5Y":
+        start.setFullYear(start.getFullYear() - 5);
+        break;
+    }
+
+    return {
+      start: start.toISOString().split("T")[0],
+      end: end.toISOString().split("T")[0],
+    };
+  }
+
+  const { start, end } = getDateRange(tabID);
 
   useEffect(() => {
     async function getMarkets() {
-      const APIbase_response = await fetch(`https://api.frankfurter.dev/v1/${startDate}..${endDate}?base=${BASE}`);
+      const APIbase_response = await fetch(`https://api.frankfurter.dev/v1/${start}..${end}?base=${BASE}`);
 
       const ratesList = await APIbase_response.json();
       const rates_range = Object.values(ratesList.rates)   
@@ -39,10 +85,11 @@ function LiveMarkets({BASE, getRatesFromMarket}) {
         }}
       );
       setRate(markets);
-      getRatesFromMarket(data) // 1. Sending rates of today to App.jsx - callback1
+      
+      getRatesFromMarket(data, ratesList.rates ) // 1. Sending rates of today to App.jsx - callback1
     }
     getMarkets();
-  }, [BASE]);
+  }, [BASE, tabID]);
 
   return (
     <>
