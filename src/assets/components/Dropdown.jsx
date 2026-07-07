@@ -4,12 +4,13 @@ import searchIcon from "/src/assets/images/icon-search.svg"
 import tickIcon from "/src/assets/images/icon-check.svg"
 const flagModules = import.meta.glob("/src/assets/images/flags/*.webp", {eager: true, import: "default",});
 // Change the Keys with currency abreviation - ex: 'AU' : '/src/assets....'
-const flags = Object.fromEntries(
+export const flags = Object.fromEntries(
     Object.entries(flagModules).map(([path, src]) => {
         const fileName = path.split("/").pop().replace(".webp", "");
         return [fileName.toUpperCase(), src];
     })
 );
+
 
 function Dropdown(
     {
@@ -29,7 +30,7 @@ function Dropdown(
     let [selected_flag, setselected_flag] = useState(default_flag)
 
     let [dropDown, setDropdown] = useState(true)
-    const ToggleDropdown = () => {        
+    const ToggleDropdown = () => {         
         if (!dropDown) {
             setDropdown(true) 
             setNormalList(true)

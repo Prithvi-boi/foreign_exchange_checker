@@ -1,9 +1,9 @@
 import {useState} from 'react'
 import Downarrow from '/src/assets/images/icon-arrow-down.svg'
 
-function TabsMenu({Callback}) {
+function TabsMenu({Callback, TabOptions, default_tabs}) {
   let [dropDown, setDropdown] = useState(false)
-  let [TabHeading, setTabHeadind] = useState('HISTORY')
+  let [TabHeading, setTabHeadind] = useState(default_tabs['Heading'])
   const ToggleDropdown = (option) =>{
     dropDown ? setDropdown(false) : setDropdown(true)
     if (option) {
@@ -12,8 +12,7 @@ function TabsMenu({Callback}) {
     }
   }
 
-
-  let options = ['HISTORY','COMPARE','FAVORITES','LOGS']
+  let options = TabOptions
   return (
     <>
     <div className='relative'>

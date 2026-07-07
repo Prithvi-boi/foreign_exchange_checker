@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Component } from 'react'
 import logo from "/src/assets/images/logo.svg"
 import LiveMarkets from './assets/components/LiveMarkets'
 import CheckRate_layout from './assets/components/CheckRate'
@@ -35,19 +35,22 @@ function App() {
     get_CurrenciesList()
   }, [])
 
-  const tabs = {
-    Default: <History/>,
-    HISTORY: <History />,
-    COMPARE: <Compare />,
-    LOGS: <Logs />,
-    FAVORITES: <Favorites />,
-  };
+  const tabs = new Map([
+    ['Default', ["HISTORY",<History/>]],
+    ['HISTORY', <History />],
+    ['COMPARE', <Compare />],
+    ['LOGS', <Logs />],
+    ['FAVORITES', <Favorites />],
+  ]);
+  const options = [...tabs.keys()].filter((val)=> val != 'Default')
+  
+  const default_tabs = {
+    Heading : [...tabs.values()][0][0], 
+    Component : [...tabs.values()][0][1]
+  }
 
-  const [Tab, setTab] = useState(tabs.Default);
-
-  const CallbackFrom_Tabs = (option) => setTab(tabs[option]);
-
-
+  const [Tab, setTab] = useState(default_tabs['Component']);
+  const CallbackFrom_Tabs = (option) => setTab(tabs.get(option));
 
   return (
     <>
@@ -67,7 +70,7 @@ function App() {
           />
         </section>
 
-        <main className='grid grid-cols-[20px_1fr_20px] lg:grid-cols-[120px_1fr_120px] grid-rows-[60px_1fr_20px_0.13fr_1fr_0.13fr]'>
+        <main className='grid gap-y-4 grid-cols-[20px_1fr_20px] lg:grid-cols-[120px_1fr_120px]'>
           <CheckRate_layout
             countries={currencyAbrev}
             countryNames={currencyNames}
@@ -76,13 +79,17 @@ function App() {
             CallbackFrom_Cklayout={handleBASEchange}
           />
 
-          <nav className='row-start-4 col-start-2'>
-            <TabsMenu Callback={CallbackFrom_Tabs} />
+          <nav className='col-start-2 h-14'>
+            <TabsMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={default_tabs} />
           </nav>
 
-          <section className='row-start-5 col-start-2'>
+          <section className='col-start-2'>
             {Tab}
           </section>
+
+          <footer className='col-start-2 h-10 w-full text-zinc-700 uppercase text-sm'> 
+            Designed by Prithvi beldar
+          </footer>
         </main>
 
       </div>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import Shuffle from "./Shuffle";
 import Dropdown from "./Dropdown";
 import starFilledIcon from "/src/assets/images/icon-star-filled.svg"
+import { flags } from "./Dropdown";
 
 //-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
 
@@ -82,13 +83,13 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
 
     return (
         <>
-        <h1 className='mt-4 text-xl row-start-1 col-start-2'>CHECK THE RATE</h1>
-        <div className='w-full grid grid-cols-[0.9rem_1fr_0.9rem] grid-rows-[2fr_2.5rem_6rem] sm:grid-rows-[2fr_2.5rem_3rem] row-start-2 col-start-2 p-3 bg-[#171719] rounded-2xl'>
+        <h1 className='col-start-2 mt-4 text-xl  '>CHECK THE RATE</h1>
+        <div className='col-start-2 w-full grid grid-cols-[0.9rem_1fr_0.9rem] grid-rows-[2fr_2.5rem_6rem] sm:grid-rows-[2fr_2.5rem_3rem]  p-3 bg-[#171719] rounded-2xl'>
                 <section className="row-start-1 col-start-2 flex flex-col sm:flex-row items-center gap-5">
                     <CheckRate
                         title={"SEND"}
                         default_currency={"USD"}
-                        default_flag={'/src/assets/images/flags/us.webp'}
+                        default_flag={flags["US"]}
                         default_BASE={currentBASE} // [1]> send default base to Checkrate
 
                         countryNames={countryNames}
@@ -107,7 +108,7 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
                         title={"RECEIVE"}
                         num_color={"#CEF739"}
                         default_currency={"INR"}
-                        default_flag={'/src/assets/images/flags/in.webp'}
+                        default_flag={flags["IN"]}
                         default_BASE={currentRCVE}
 
                         countryNames={countryNames}
