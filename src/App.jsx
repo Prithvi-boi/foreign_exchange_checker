@@ -19,10 +19,12 @@ function App() {
   let [pair, setpair] = useState(['USD','INR'])
   let [todaysData, settodaysData] = useState('INR')
   let [rangedata, setRangedata] = useState({})
+  // console.log(pair);
+  
 
   const getRates_Today = (data, rates_ranges) => { settodaysData(data) , setRangedata(rates_ranges) }; // 3. getting rates of today from getRatesFromMarket- callback3
   // [7]> Set selected currency (BASE)
-  const handleCurrencyChange = (bse, rve) => { setBASE(bse) ,setpair([bse,rve]) };
+  const handleCurrencyChange = (bse, rve) => {setBASE(bse) ,setpair([bse,rve]);};
   
   // fetch currencies only once using useEffect hook
   useEffect(() => {

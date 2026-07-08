@@ -27,6 +27,8 @@ ChartJS.register(
 //------------------------------------------------------
 
 function HistoryCharts({pairs,rangedata,callbackdata}) {
+  // console.log(pairs);
+  
   const labels = Object.keys(rangedata);
   useEffect(()=>{
     callbackdata(Object.values(rangedata).map((val) => val[pairs[1]]))
@@ -96,14 +98,15 @@ export default function History({rangedata,Currency_pairs, callbackFrom_History}
   let open = DatafromCharts ? DatafromCharts[0] : ''
   let close = DatafromCharts ? DatafromCharts[1] : ''
   let differnce = DatafromCharts ? close-open : ''
+  let isDiffNan = isNaN(differnce)
 
   return (
     <div className='w-full grid grid-cols-1 gap-4'>
       <div className='grid grid-cols-2 grid-rows-[5em_5em] gap-3'>
         <Card Heading={'OPEN'} Content={open} />
         <Card Heading={'LAST'} Content={close}/>
-        <Card Heading={'CHANGE'} Content={`${DatafromCharts ? (differnce > 0 ? '+' : '') : ''}${DatafromCharts ? differnce.toFixed(4) : ''}`} Contentcolor={DatafromCharts ? differnce > 0 ? 'text-green-500': 'text-red-500' : ''} />
-        <Card Heading={'% CHANGE'} Content={`${DatafromCharts ? (differnce > 0 ? "▲" : "▼") : ''} ${DatafromCharts ? (differnce > 0 ? '+' : '') : ''}${DatafromCharts ? (((differnce)/open)*100).toFixed(2) : ''}`} Contentcolor={DatafromCharts ? differnce > 0 ? 'text-green-500': 'text-red-500' : ''} />
+        <Card Heading={'CHANGE'} Content={`${DatafromCharts ? (differnce > 0 ? '+' : '') : ''} ${DatafromCharts ? `${isDiffNan ? 0 : differnce.toFixed(4)}` : ''}`} Contentcolor={DatafromCharts ? differnce > 0 ? 'text-green-500': 'text-red-500' : ''} />
+        <Card Heading={'% CHANGE'} Content={`${DatafromCharts ? (differnce > 0 ? "▲" : "▼") : ''} ${DatafromCharts ? (differnce > 0 ? '+' : '') : ''}${DatafromCharts ? (isDiffNan ? 0 : (((differnce)/open)*100).toFixed(2)) : ''}`} Contentcolor={DatafromCharts ? differnce > 0 ? 'text-green-500': 'text-red-500' : ''} />
       </div>
 
       <HistoryChartTabs callback={callbackFrom_ChartTab} />

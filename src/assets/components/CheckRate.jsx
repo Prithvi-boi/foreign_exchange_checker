@@ -59,7 +59,8 @@ function CheckRate(
 function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, CallbackFrom_Cklayout,  }) {
     let [currentBASE, setcurrentBASE] = useState('USD')
     let [currentRCVE, setcurrentRCVE] = useState('INR') // RCVE means Reciever currency
-
+    // console.log(currentBASE, currentRCVE);
+    
     let [exchange, setexchange]     = useState(false)
     let [receiveAmt, setreceiveAmt] = useState(null)
 
@@ -76,10 +77,13 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
     const receiveAmtData = (amt) => {setreceiveAmt(Number(amt))}
     // [6]> send selected currency (BASE) to App and Changes its own BASE
     const handleBasetoApp = (currency) => {
-        CallbackFrom_Cklayout(currency, currentRCVE)
         setcurrentBASE(currency)
+        CallbackFrom_Cklayout(currency, currentRCVE)
     }; 
-    const getRCVEfromDropBOX = (currency) => {setcurrentRCVE(currency)};
+    const getRCVEfromDropBOX = (currency) => {
+        CallbackFrom_Cklayout(currentBASE, currency)
+        setcurrentRCVE(currency)
+    };
 
     return (
         <>

@@ -91,19 +91,21 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
     getMarkets();
   }, [BASE, tabID]);
 
+
+  
   return (
     <>
       <div className='h-10 w-full bg-[#171719] flex '>
         <div className='h-full bg-[#CEF739] grid place-items-center p-2 text-[#171719] text-[0.8rem] shrink-0'>● LIVE MARKETS</div>
         <div className='flex h-full w-full overflow-x-scroll scrollbar-none text-[#171719] text-[0.8rem]'> {/*Pairs of Currencies; USD/INR*/}
           {rates?.map((rate) => {
-            return (
+            return ( 
               <div key={rate.pair} className='shrink-0 h-full p-2 border-r-2 border-[#2E2E2E] ml-1 text-[#9D9D9D] flex items-center gap-3'>
                 <h3>{rate.pair}</h3>
                 <p className='text-white'>{rate.current?.toFixed(2)}</p>
                 <p className={rate.percentChange >= 0 ? "text-green-500" : "text-red-500"}>
                   {rate.percentChange >= 0 ? "▲" : "▼"}{" "}
-                  {Math.abs(rate.percentChange).toFixed(2)}%
+                  {(!isNaN(rate.percentChange)) ? Math.abs(rate.percentChange).toFixed(2) : 0}%
                 </p>
               </div>
           )})}
