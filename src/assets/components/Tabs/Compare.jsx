@@ -6,17 +6,21 @@ import DownArrow from "/src/assets/images/icon-arrow-down.svg"
 function CompareCard({flagimg,currencyAbre,currencyName,todaysRate,inputVal}) { 
   return(
     <div className='grid grid-cols-[3em_auto_4em_3em] py-2 px-1 bg-zinc-700 border-2 border-zinc-600 rounded-lg'>
+      
       <div className='p-2'>
         <img className='rounded-full border-[0.1em] border-zinc-800' src={flagimg} alt='flagimg' />
       </div>
+
       <div className='place-items-start flex flex-col justify-center gap-1 mr-2'>
         <h6>{currencyAbre}</h6>
         <p className='text-[0.6em] text-zinc-400'>{currencyName}</p>
       </div>
+
       <div className='place-items-end flex flex-col justify-center gap-1 mr-2'>
         <p>{(inputVal*(todaysRate?.[currencyAbre])).toFixed(2)}</p>
         <p className='text-[0.6em] text-zinc-400'>@ {todaysRate?.[currencyAbre]}</p>
       </div>
+
       <button className='m-1 rounded-lg border-[0.1em] border-zinc-500 flex justify-center items-center'>
         <img className='h-5' src={Staricon} alt="StarIcon" />
       </button>
@@ -36,6 +40,7 @@ export default function Compare({BASE, VALUE, DATA, COUNTRIES}) {
   
   return (
     <div className='flex flex-col w-full bg-zinc-800 rounded-2xl p-4'>
+      
       <div className='flex items-baseline gap-2'>
         <h4 className='text-[0.9em] text-zinc-400'>MULTI-CURRENCY</h4>
         <p>{VALUE ? VALUE : 0} FROM {BASE}</p>

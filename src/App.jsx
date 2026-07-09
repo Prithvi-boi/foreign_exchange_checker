@@ -22,10 +22,11 @@ function App() {
   let [todaysData, settodaysData] = useState('INR')
   let [rangedata, setRangedata] = useState({})
   let [inputAmt, setinputAmt] = useState(0)
+  let [favonly, setfavonly] = useState(false)
 
   const getRates_Today = (data, rates_ranges) => { settodaysData(data) , setRangedata(rates_ranges) }; // 3. getting rates of today from getRatesFromMarket- callback3
   // [7]> Set selected currency (BASE)
-  const handleCurrencyChange = (bse, rve,input) => {setBASE(bse) ,setpair([bse,rve]),setinputAmt(input)};
+  const handleCurrencyChange = (bse, rve,input,fav) => {setBASE(bse) ,setpair([bse,rve]),setinputAmt(input), setfavonly(fav)};
   
   // fetch currencies only once using useEffect hook
   useEffect(() => {
@@ -40,7 +41,7 @@ function App() {
     get_CurrenciesList()
   }, [])
 
-  const [selectedTab, setSelectedTab] = useState("COMPARE");
+  const [selectedTab, setSelectedTab] = useState("FAVORITES");
   const options = [
     "HISTORY",
     "COMPARE",
@@ -79,15 +80,15 @@ function App() {
             CallbackFrom_Cklayout={handleCurrencyChange}
           />
 
-          <nav className='col-start-2 h-14'>
+          <nav className='col-start-2 h-14 z-999'>
             <TabsMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
           </nav>
 
           <section className='col-start-2'>
             {selectedTab === "HISTORY" && (<History rangedata={rangedata} Currency_pairs={pair} callbackFrom_History={(val) => {setTabID(val)}} />)}
             {selectedTab === "COMPARE" && <Compare BASE={base} VALUE={inputAmt} COUNTRIES={[currencyAbrev,currencyNames]} DATA={rangedata}/>}
+            {selectedTab === "FAVORITES" && <Favorites pairs={favonly ? pair : undefined} DATA={rangedata}/>}
             {selectedTab === "LOGS" && <Logs />}
-            {selectedTab === "FAVORITES" && <Favorites />}
           </section>
 
           <footer className='col-start-2 h-10 w-full text-zinc-700 uppercase text-sm'> 

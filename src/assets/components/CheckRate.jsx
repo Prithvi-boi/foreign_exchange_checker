@@ -76,17 +76,21 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
 
     const receiveAmtData = (amt) => {
         setreceiveAmt(Number(amt))
-        CallbackFrom_Cklayout(currentBASE,currentRCVE,amt)
+        CallbackFrom_Cklayout(currentBASE,currentRCVE,amt, false)
     }
     // [6]> send selected currency (BASE) to App and Changes its own BASE
     const handleBasetoApp = (currency) => {
         setcurrentBASE(currency)
-        CallbackFrom_Cklayout(currency, currentRCVE,receiveAmt)
+        CallbackFrom_Cklayout(currency, currentRCVE,receiveAmt, false)
     }; 
     const getRCVEfromDropBOX = (currency) => {
-        CallbackFrom_Cklayout(currentBASE, currency,receiveAmt)
+        CallbackFrom_Cklayout(currentBASE, currency,receiveAmt, false)
         setcurrentRCVE(currency)
     };
+
+    const handleFavclick = ()=>{
+        CallbackFrom_Cklayout(currentBASE,currentRCVE,receiveAmt, true)
+    }
 
     return (
         <>
@@ -133,7 +137,7 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
                 <section className="sm:flex-row flex flex-col justify-center items-center gap-4 row-start-3 col-start-2">
                     <p className='text-[0.8rem]'> 1 {currentBASE} = {Reciever_rate || 1} {currentRCVE}</p>
                     <div className='sm:ml-auto flex gap-4'>
-                        <button className='flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
+                        <button onClick={() => handleFavclick()} className='flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
                             <img src={starFilledIcon} alt="star emoji" />
                             <p className='text-[0.8rem]'>FAVORITED</p>
                         </button>
