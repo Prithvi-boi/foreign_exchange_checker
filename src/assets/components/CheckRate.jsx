@@ -62,7 +62,7 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
     // console.log(currentBASE, currentRCVE);
     
     let [exchange, setexchange]     = useState(false)
-    let [receiveAmt, setreceiveAmt] = useState(null)
+    let [receiveAmt, setreceiveAmt] = useState(null)    
 
     const Reciever_rate = ratesOftoday?.rates?.[currentRCVE]; // get rate of receiver country
     const amount = Number(receiveAmt);
@@ -74,14 +74,17 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
         setcurrentRCVE(BASE)
     }
 
-    const receiveAmtData = (amt) => {setreceiveAmt(Number(amt))}
+    const receiveAmtData = (amt) => {
+        setreceiveAmt(Number(amt))
+        CallbackFrom_Cklayout(currentBASE,currentRCVE,amt)
+    }
     // [6]> send selected currency (BASE) to App and Changes its own BASE
     const handleBasetoApp = (currency) => {
         setcurrentBASE(currency)
-        CallbackFrom_Cklayout(currency, currentRCVE)
+        CallbackFrom_Cklayout(currency, currentRCVE,receiveAmt)
     }; 
     const getRCVEfromDropBOX = (currency) => {
-        CallbackFrom_Cklayout(currentBASE, currency)
+        CallbackFrom_Cklayout(currentBASE, currency,receiveAmt)
         setcurrentRCVE(currency)
     };
 

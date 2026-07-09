@@ -28,11 +28,12 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
 
   function getDateRange(range) {
     const end = new Date(today);
-    const start = new Date(today);
+    const start = new Date(today);    
 
     switch (range) {
       case "1D":
-        start.setDate(start.getDate() - 1);
+        end.setDate(end.getDate() - 1);
+        start.setDate(start.getDate() - 2);
         break;
 
       case "1W":
@@ -55,7 +56,7 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
         start.setFullYear(start.getFullYear() - 5);
         break;
     }
-
+        
     return {
       start: start.toISOString().split("T")[0],
       end: end.toISOString().split("T")[0],
@@ -69,12 +70,14 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
       const APIbase_response = await fetch(`https://api.frankfurter.dev/v1/${start}..${end}?base=${BASE}`);
 
       const ratesList = await APIbase_response.json();
+      // console.log(ratesList);
+      
       const rates_range = Object.values(ratesList.rates)   
       const data = {rates : rates_range[rates_range.length - 1]}  
 
       const markets = popular_pairs.map((pair) => {
-        const current  = rates_range[rates_range.length - 1][pair];
-        const previous = rates_range[rates_range.length - 2][pair];
+        const current = rates_range[rates_range.length - 1]?.[pair];
+        const previous = rates_range[rates_range.length - 2]?.[pair] ?? current;
         const change   = current - previous;
         const percentChange = (change / previous) * 100;
         
@@ -85,11 +88,11 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
         }}
       );
       setRate(markets);
-      
+        
       getRatesFromMarket(data, ratesList.rates ) // 1. Sending rates of today to App.jsx - callback1
     }
     getMarkets();
-  }, [BASE, tabID]);
+  }, [BASE, start, end]);
 
 
   
