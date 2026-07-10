@@ -1,9 +1,18 @@
-import { use, useState } from 'react'
+import { useState } from 'react'
 import { flags } from '../Dropdown'
 import Staricon from "/src/assets/images/icon-star.svg"
+import StariconFilled from "/src/assets/images/icon-star-filled.svg?react"
 import DownArrow from "/src/assets/images/icon-arrow-down.svg"
+import { callback } from 'chart.js/helpers'
 
-function CompareCard({flagimg,currencyAbre,currencyName,todaysRate,inputVal}) { 
+function CompareCard({flagimg,currencyAbre,currencyName,todaysRate,inputVal, callback}) { 
+  const [toggleBtn, setToggleBtn] = useState(true)
+  const [FavToggle, setFavToggle] = useState(false)
+  const handleClick = () => {
+    setToggleBtn(!toggleBtn)
+    callback(currencyAbre, FavToggle)
+    setFavToggle(!FavToggle)
+  }
   return(
     <div className='grid grid-cols-[3em_auto_4em_3em] py-2 px-1 bg-zinc-700 border-2 border-zinc-600 rounded-lg'>
       
@@ -21,14 +30,16 @@ function CompareCard({flagimg,currencyAbre,currencyName,todaysRate,inputVal}) {
         <p className='text-[0.6em] text-zinc-400'>@ {todaysRate?.[currencyAbre]}</p>
       </div>
 
-      <button className='m-1 rounded-lg border-[0.1em] border-zinc-500 flex justify-center items-center'>
+      <button onClick={()=>{handleClick()}} className={`m-1 rounded-lg border-[0.1em] text-[#CEF739] ${toggleBtn ? 'border-zinc-500' : 'border-[#CEF739]'} flex justify-center items-center`}>
+        {toggleBtn ?
         <img className='h-5' src={Staricon} alt="StarIcon" />
+        : <StariconFilled className={`text-[#CEF739]`}/>}
       </button>
     </div>
   )
 }
 
-export default function Compare({BASE, VALUE, DATA, COUNTRIES}) {
+export default function Compare({BASE, VALUE, DATA, COUNTRIES, callbacktoApp}) {
   let CurrencyData = Object.values(DATA)
   let flagSrc = Object.values(flags)
   let [toggleMore,setToggleMore] = useState(false)
@@ -36,6 +47,9 @@ export default function Compare({BASE, VALUE, DATA, COUNTRIES}) {
   const handleShowMore = ()=>{
     !toggleMore ? setshowText('LESS') : setshowText('MORE')
     setToggleMore(!toggleMore)
+  }
+  const Favcallback = (currencyAbre,FavToggle) =>{
+    callbacktoApp([BASE,currencyAbre], true, FavToggle)
   }
   
   return (
@@ -55,6 +69,7 @@ export default function Compare({BASE, VALUE, DATA, COUNTRIES}) {
           currencyName={COUNTRIES?.[1]?.[COUNTRIES?.[0]?.[i]] ?? ""}
           todaysRate={CurrencyData?.at(-1)}
           inputVal={VALUE}
+          callback={Favcallback}
           />
         })}
       </div>

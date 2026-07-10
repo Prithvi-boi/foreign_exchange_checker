@@ -2,9 +2,13 @@ import React, { useEffect, useState, useRef } from 'react'
 import Staricon from "/src/assets/images/icon-star-filled.svg?react"
 import DownArrow from "/src/assets/images/icon-arrow-down.svg"
 
-function FavoriteCard({DATA, index, callback}) {
+function FavoriteCard({DATA, index, callback, favToggle}) {
   if (!DATA[index]) return 
   const [width, setWidth] = useState(false)
+
+  if (favToggle) {
+    callback(index, `${DATA[index][0][0]}-${DATA[index][0][1]}`)
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,7 +37,7 @@ function FavoriteCard({DATA, index, callback}) {
   )
 }
 
-function Favorites({pairs, DATA}) {
+function Favorites({pairs, DATA,favToggle}) {  
   let CurrencyData = Object.values(DATA)
   const today = CurrencyData?.at(-1)
   const yesterday = CurrencyData?.at(-2)
@@ -71,9 +75,6 @@ function Favorites({pairs, DATA}) {
     setFavCount(val => val - 1)
   }
 
-  console.log(FavPairlist);
-  
-
   return (
     <div className='w-full bg-zinc-800 rounded-2xl p-4'>
       <div className='flex items-baseline justify-between'>
@@ -88,6 +89,7 @@ function Favorites({pairs, DATA}) {
             DATA={tempAry}
             index={index}
             callback ={removeFav}
+            favToggle={favToggle}
           />
         })}
       </div>

@@ -41,7 +41,7 @@ function App() {
     get_CurrenciesList()
   }, [])
 
-  const [selectedTab, setSelectedTab] = useState("FAVORITES");
+  const [selectedTab, setSelectedTab] = useState("COMPARE");
   const options = [
     "HISTORY",
     "COMPARE",
@@ -51,6 +51,13 @@ function App() {
 
   const CallbackFrom_Tabs = (option) => {setSelectedTab(option)};
   const [tabID, setTabID] = useState('1D')
+
+  const [favTog, setFavTog] = useState(false)
+  const CallbackFrom_Compare = (pairAry, fav,FavToggle) => {
+    setpair(pairAry)
+    setfavonly(fav)
+    setFavTog(FavToggle)
+  }
 
   return (
     <>
@@ -86,8 +93,23 @@ function App() {
 
           <section className='col-start-2'>
             {selectedTab === "HISTORY" && (<History rangedata={rangedata} Currency_pairs={pair} callbackFrom_History={(val) => {setTabID(val)}} />)}
-            {selectedTab === "COMPARE" && <Compare BASE={base} VALUE={inputAmt} COUNTRIES={[currencyAbrev,currencyNames]} DATA={rangedata}/>}
-            {selectedTab === "FAVORITES" && <Favorites pairs={favonly ? pair : undefined} DATA={rangedata}/>}
+            <div className={selectedTab === "COMPARE" ? "block" : "hidden"}>
+              <Compare
+                callbacktoApp={CallbackFrom_Compare}
+                BASE={base}
+                VALUE={inputAmt}
+                COUNTRIES={[currencyAbrev, currencyNames]}
+                DATA={rangedata}
+                />
+            </div>
+
+            <div className={selectedTab === "FAVORITES" ? "block" : "hidden"}>
+              <Favorites
+                pairs={favonly ? pair : undefined}
+                DATA={rangedata}
+                favToggle = {favTog}
+              />
+            </div>
             {selectedTab === "LOGS" && <Logs />}
           </section>
 
