@@ -56,7 +56,7 @@ function CheckRate(
     )
 }
 
-function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, CallbackFrom_Cklayout,  }) {
+function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, CallbackFrom_Cklayout,CallbackForLOGS  }) {
     let [currentBASE, setcurrentBASE] = useState('USD')
     let [currentRCVE, setcurrentRCVE] = useState('INR') // RCVE means Reciever currency
     // console.log(currentBASE, currentRCVE);
@@ -90,6 +90,9 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
 
     const handleFavclick = ()=>{
         CallbackFrom_Cklayout(currentBASE,currentRCVE,receiveAmt, true)
+    }
+    const hangleLogClick = ()=>{
+        CallbackForLOGS(currentBASE,currentRCVE,amount,convertedAmount)
     }
 
     return (
@@ -142,7 +145,7 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
                             <p className='text-[0.8rem]'>FAVORITED</p>
                         </button>
 
-                        <button className='flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
+                        <button onClick={() => hangleLogClick()} className='flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
                             <p className='text-[0.8rem]'>LOG CONVERSATION</p>
                         </button>
                     </div>

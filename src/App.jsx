@@ -18,16 +18,16 @@ function App() {
 
   let [unselect, setUnselect] = useState(true)
   let [base, setBASE] = useState('USD')
-  let [pair, setpair] = useState(['USD','INR'])
+  let [pair, setpair] = useState(['USD', 'INR'])
   let [todaysData, settodaysData] = useState('INR')
   let [rangedata, setRangedata] = useState({})
   let [inputAmt, setinputAmt] = useState(0)
   let [favonly, setfavonly] = useState(false)
 
-  const getRates_Today = (data, rates_ranges) => { settodaysData(data) , setRangedata(rates_ranges) }; // 3. getting rates of today from getRatesFromMarket- callback3
+  const getRates_Today = (data, rates_ranges) => { settodaysData(data), setRangedata(rates_ranges) }; // 3. getting rates of today from getRatesFromMarket- callback3
   // [7]> Set selected currency (BASE)
-  const handleCurrencyChange = (bse, rve,input,fav) => {setBASE(bse) ,setpair([bse,rve]),setinputAmt(input), setfavonly(fav)};
-  
+  const handleCurrencyChange = (bse, rve, input, fav) => { setBASE(bse), setpair([bse, rve]), setinputAmt(input), setfavonly(fav) };
+
   // fetch currencies only once using useEffect hook
   useEffect(() => {
     async function get_CurrenciesList() {
@@ -41,7 +41,7 @@ function App() {
     get_CurrenciesList()
   }, [])
 
-  const [selectedTab, setSelectedTab] = useState("COMPARE");
+  const [selectedTab, setSelectedTab] = useState("HISTORY");
   const options = [
     "HISTORY",
     "COMPARE",
@@ -49,14 +49,21 @@ function App() {
     "FAVORITES",
   ];
 
-  const CallbackFrom_Tabs = (option) => {setSelectedTab(option)};
+  const CallbackFrom_Tabs = (option) => { setSelectedTab(option) };
   const [tabID, setTabID] = useState('1D')
 
   const [favTog, setFavTog] = useState(false)
-  const CallbackFrom_Compare = (pairAry, fav,FavToggle) => {
+  const CallbackFrom_Compare = (pairAry, fav, FavToggle) => {
     setpair(pairAry)
     setfavonly(fav)
     setFavTog(FavToggle)
+  }
+
+  const [LogInfos , setLogInfos] = useState([])
+  const [logToggle , setlogToggle] = useState(false)
+  const handleLogClick = (currentBASE,currentRCVE,amount,convertedAmount) =>{
+    setLogInfos([currentBASE,currentRCVE,amount,convertedAmount])
+    setlogToggle(true)
   }
 
   return (
@@ -85,6 +92,7 @@ function App() {
             unselected={unselect}
             ratesOftoday={todaysData} // 4. sending rates of today to CheckRateBox- props1
             CallbackFrom_Cklayout={handleCurrencyChange}
+            CallbackForLOGS={handleLogClick}
           />
 
           <nav className='col-start-2 h-14 z-999'>
@@ -92,7 +100,7 @@ function App() {
           </nav>
 
           <section className='col-start-2'>
-            {selectedTab === "HISTORY" && (<History rangedata={rangedata} Currency_pairs={pair} callbackFrom_History={(val) => {setTabID(val)}} />)}
+            {selectedTab === "HISTORY" && (<History rangedata={rangedata} Currency_pairs={pair} callbackFrom_History={(val) => { setTabID(val) }} />)}
             <div className={selectedTab === "COMPARE" ? "block" : "hidden"}>
               <Compare
                 callbacktoApp={CallbackFrom_Compare}
@@ -100,20 +108,25 @@ function App() {
                 VALUE={inputAmt}
                 COUNTRIES={[currencyAbrev, currencyNames]}
                 DATA={rangedata}
-                />
+              />
             </div>
 
             <div className={selectedTab === "FAVORITES" ? "block" : "hidden"}>
               <Favorites
                 pairs={favonly ? pair : undefined}
                 DATA={rangedata}
-                favToggle = {favTog}
+                favToggle={favTog}
               />
             </div>
-            {selectedTab === "LOGS" && <Logs />}
+
+            <div className={selectedTab === "LOGS" ? "block" : "hidden"}>
+              <Logs
+                LogInfos = {logToggle ? LogInfos : undefined}
+              />
+            </div>
           </section>
 
-          <footer className='col-start-2 h-10 w-full text-zinc-700 uppercase text-sm'> 
+          <footer className='col-start-2 h-10 w-full text-zinc-700 uppercase text-sm'>
             Designed by Prithvi beldar
           </footer>
         </main>
