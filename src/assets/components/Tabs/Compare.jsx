@@ -30,7 +30,7 @@ function CompareCard({flagimg,currencyAbre,currencyName,todaysRate,inputVal, cal
         <p className='text-[0.6em] text-zinc-400'>@ {todaysRate?.[currencyAbre]}</p>
       </div>
 
-      <button onClick={()=>{handleClick()}} className={`m-1 rounded-lg border-[0.1em] text-[#CEF739] ${toggleBtn ? 'border-zinc-500' : 'border-[#CEF739]'} flex justify-center items-center`}>
+      <button onClick={()=>{handleClick()}} className={`cursor-pointer m-1 rounded-lg border-[0.1em] text-[#CEF739] ${toggleBtn ? 'border-zinc-500' : 'border-[#CEF739]'} flex justify-center items-center`}>
         {toggleBtn ?
         <img className='h-5' src={Staricon} alt="StarIcon" />
         : <StariconFilled className={`text-[#CEF739]`}/>}
@@ -73,7 +73,7 @@ export default function Compare({BASE, VALUE, DATA, COUNTRIES, callbacktoApp}) {
           />
         })}
       </div>
-      <button onClick={() => handleShowMore()} className='mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>
+      <button onClick={() => handleShowMore()} className='cursor-pointer mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>
         SHOW {showText}
         <img className={`invert h-3 mb-1 transition-all ${toggleMore ? 'rotate-180' : ''}`} src={DownArrow} alt="dowrnarrowimg" />
       </button>

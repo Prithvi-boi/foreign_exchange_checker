@@ -30,7 +30,7 @@ function FavoriteCard({DATA, index, callback, favToggle}) {
         <p className={`text-[0.7em] ${DATA[index][2] > 0 ? 'text-green-500': 'text-red-500'}`}>{DATA[index][2] > 0 ? "▲" : "▼"} {DATA[index][2]}</p>
       </div>
 
-      <button onClick={() => {callback(index, `${DATA[index][0][0]}-${DATA[index][0][1]}`)}} className='m-1 rounded-lg border-[0.1em] border-[#CEF739] flex justify-center items-center'>
+      <button onClick={() => {callback(index, `${DATA[index][0][0]}-${DATA[index][0][1]}`)}} className='cursor-pointer  m-1 rounded-lg border-[0.1em] border-[#CEF739] flex justify-center items-center'>
         <Staricon className='h-5 text-[#CEF739]' />
       </button>
     </div>
@@ -97,7 +97,7 @@ function Favorites({pairs, DATA,favToggle, callback}) {
         {tempAry[0] === undefined ? <p className='text-zinc-500'>No Favorites yet...</p> : ''}
       </div>
 
-      <button onClick={() => handleShowMore()} className='mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>
+      <button onClick={() => handleShowMore()} className='cursor-pointer mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>
         SHOW {showText}
         <img className={`invert h-3 mb-1 transition-all ${toggleMore ? 'rotate-180' : ''}`} src={DownArrow} alt="dowrnarrowimg" />
       </button>

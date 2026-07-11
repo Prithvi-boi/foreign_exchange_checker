@@ -25,7 +25,7 @@ function LogsCard({DATE, DATA, callback}) {
         <p className='text-[1em] text-[#CEF739]'>{(Number(DATA[3])).toFixed(2)}</p>
       </div>
 
-      <button onClick={() => deleteMycomp()} className={`m-1 rounded-lg border-[0.1em] text-zinc-500 flex justify-center items-center`}>
+      <button onClick={() => deleteMycomp()} className={`cursor-pointer m-1 rounded-lg border-[0.1em] text-zinc-500 flex justify-center items-center`}>
         <img className='h-5' src={DeleteIcon} alt="DeleteIcon" />
       </button>
     </div>
@@ -68,11 +68,11 @@ export default function Logs({ LogInfos,callback }) {
         <h4 >CONVERSION LOG</h4>
         <div className='flex items-center w-full'>
           <p className='text-[0.9em] text-zinc-400'>{LogsMAP.size} LOGGED</p>
-          <button onClick={() => LogsMAP.clear()} className='ml-auto p-2 h-10 w-25 rounded-lg border-2 border-zinc-600 bg-zinc-700 text-sm'>CLEAR ALL</button>
+          <button onClick={() => LogsMAP.clear()} className='cursor-pointer  ml-auto p-2 h-10 w-25 rounded-lg border-2 border-zinc-600 bg-zinc-700 text-sm'>CLEAR ALL</button>
         </div>
       </div>
 
-      <div className={`${LogsMAP.size === 0 ? 'items-center'  : ''} mt-4 flex flex-col gap-2 transition-all duration-300 ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
+      <div className={`${LogsMAP.size === 0 ? 'items-center'  : ''} mt-4 flex flex-col gap-2 transition-all duration-300 scrollbar-none ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
         {Array.from(LogsMAP).map(([date, data]) => (
           <LogsCard
             key={date}
@@ -84,7 +84,7 @@ export default function Logs({ LogInfos,callback }) {
         {LogsMAP.size === 0 ? <p className='text-zinc-500'>No Conversations yet...</p> : ''}
       </div>
 
-      <button onClick={() => handleShowMore()} className='mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>
+      <button onClick={() => handleShowMore()} className='cursor-pointer  mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>
         SHOW {showText}
         <img className={`invert h-3 mb-1 transition-all ${toggleMore ? 'rotate-180' : ''}`} src={DownArrow} alt="dowrnarrowimg" />
       </button>

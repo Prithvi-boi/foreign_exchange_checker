@@ -94,13 +94,16 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
     getMarkets();
   }, [BASE, start, end]);
 
-
+  const [Clicked , setClicked] = useState(false)
+  window.addEventListener('mousedown', (event) => {setClicked(true)});
+  window.addEventListener('mouseup', (event) => {setClicked(false)});
+  
   
   return (
     <>
       <div className='h-10 w-full bg-[#171719] flex '>
         <div className='h-full bg-[#CEF739] grid place-items-center p-2 text-[#171719] text-[0.8rem] shrink-0'>● LIVE MARKETS</div>
-        <div className='flex h-full w-full overflow-x-scroll scrollbar-none text-[#171719] text-[0.8rem]'> {/*Pairs of Currencies; USD/INR*/}
+        <div className={`${Clicked ? 'cursor-grabbing' : 'cursor-grab'} flex h-full w-full overflow-x-scroll scrollbar-none text-[#171719] text-[0.8rem]`}> {/*Pairs of Currencies; USD/INR*/}
           {rates?.map((rate) => {
             return ( 
               <div key={rate.pair} className='shrink-0 h-full p-2 border-r-2 border-[#2E2E2E] ml-1 text-[#9D9D9D] flex items-center gap-3'>

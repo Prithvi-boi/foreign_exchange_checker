@@ -84,7 +84,7 @@ function HistoryCharts({pairs,rangedata,callbackdata}) {
         <h4>{pairs[0]}/{pairs[1]}</h4>
         <p className='text-zinc-500'>Last · Date · CET</p>
       </div>
-      <div className='h-full w-full rounded-2xl'>
+      <div className='relative h-full w-full rounded-2xl'>
         <Line data={data} options={options} />
       </div>
     </div>
@@ -144,7 +144,7 @@ function HistoryChartTabs({callback}) {
           return <button key={i} 
           onClick={(e) => { 
             handleonClick(e.target.innerText,e.target.offsetLeft,e.target.offsetWidth) 
-          }} className={`${option == btnActive ? 'text-white' : 'text-zinc-700'} text-[0.8rem] h-full w-15 rounded-l transition-colors duration-600 ease-out`}>{option}</button>
+          }} className={`cursor-pointer ${option == btnActive ? 'text-white' : 'text-zinc-700'} text-[0.8rem] h-full w-15 rounded-l transition-colors duration-600 ease-out`}>{option}</button>
         })}
       <div style={{width: `${btnWidth}px`, left: btnOffsetLEFT}} className={`h-full bg-zinc-700 opacity-60 absolute transition-[left] duration-500 rounded-lg`}></div>
       </div>

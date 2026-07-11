@@ -105,7 +105,7 @@ function App() {
           />
         </section>
 
-        <main className='grid gap-y-4 grid-cols-[20px_1fr_20px] lg:grid-cols-[120px_1fr_120px]'>
+        <main className='grid gap-y-4 grid-cols-[20px_auto_20px] lg:grid-cols-[120px_auto_120px]'>
           <CheckRate_layout
             countries={currencyAbrev}
             countryNames={currencyNames}

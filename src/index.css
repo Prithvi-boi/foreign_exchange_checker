@@ -16,6 +16,7 @@ body {
   min-height: 100dvh;
   font-family: "JetBrains", monospace;
   color: white;
+  overflow-x: hidden;
 }
 
 /* Hide input number arrows */

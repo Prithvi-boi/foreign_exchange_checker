@@ -33,7 +33,7 @@ function CheckRate(
             <div className='grid-cols-1 grid-rows-[1fr_3fr] grid p-3 h-30 w-full bg-[#202022] border-2 border-[#2E2E2E] rounded-2xl'>
                 <h3 className='text-[#C6C6C6]'>{title}</h3>
 
-                <div className='grid grid-cols-[auto_8rem] sm:grid-cols-[auto_6rem]'>
+                <div className='grid grid-cols-[auto_8rem] sm:grid-cols-[auto_6rem] min-w-0'>
 
                     {/* Input Number box */}
                     {title == 'SEND' && <input placeholder="0.00" onChange={(e) => { receiveAmtData(e.target.value) }} className="sm:text-2xl mr-auto my-auto w-full text-4xl outline-0" type="number" onWheel={(e) => (e) => e.currentTarget.blur()} />}
@@ -140,12 +140,12 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
                 <section className="sm:flex-row flex flex-col justify-center items-center gap-4 row-start-3 col-start-2">
                     <p className='text-[0.8rem]'> 1 {currentBASE} = {Reciever_rate || 1} {currentRCVE}</p>
                     <div className='sm:ml-auto flex gap-4'>
-                        <button onClick={() => handleFavclick()} className='flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
+                        <button onClick={() => handleFavclick()} className='cursor-pointer flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
                             <img src={starFilledIcon} alt="star emoji" />
                             <p className='text-[0.8rem]'>FAVORITED</p>
                         </button>
 
-                        <button onClick={() => hangleLogClick()} className='flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
+                        <button onClick={() => hangleLogClick()} className='cursor-pointer flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
                             <p className='text-[0.8rem]'>LOG CONVERSATION</p>
                         </button>
                     </div>

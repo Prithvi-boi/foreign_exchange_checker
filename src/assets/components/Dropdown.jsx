@@ -128,9 +128,9 @@ function Dropdown(
 
     //------------------------------------------------------ Returns
     return (
-        <div className="col-start-2 m-auto relative">
+        <div className="col-start-2 m-auto relative cursor-pointer">
 
-            <button onClick={() => ToggleDropdown()} className="w-full flex gap-2 items-center justify-evenly mr-2 px-2 py-2 text-white bg-zinc-900 border border-zinc-700 rounded">
+            <button onClick={() => ToggleDropdown()} className="cursor-pointer w-full flex gap-2 items-center justify-evenly mr-2 px-2 py-2 text-white bg-zinc-900 border border-zinc-700 rounded">
                 <img className="h-5 rounded-full" src={selected_flag ? selected_flag : default_flag} alt="country flag" />
                 <p>{selected_currency ? selected_currency : default_currency}</p>
                 <img src={chevronDownIcon} alt="drop arrow" />
