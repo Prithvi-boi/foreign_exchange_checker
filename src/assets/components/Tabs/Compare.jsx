@@ -60,7 +60,7 @@ export default function Compare({BASE, VALUE, DATA, COUNTRIES, callbacktoApp}) {
         <p>{VALUE ? VALUE : 0} FROM {BASE}</p>
       </div>
 
-      <div className={`mt-4 flex flex-col gap-2 transition-all duration-300 ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
+      <div className={`mt-4 flex flex-col gap-2 transition-all duration-300 scrollbar-none ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
         {flagSrc.map((imgSrc,i) => {
           if (COUNTRIES?.[0]?.[i] == BASE) return
           return <CompareCard key={i} 

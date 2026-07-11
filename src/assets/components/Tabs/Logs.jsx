@@ -32,7 +32,7 @@ function LogsCard({DATE, DATA, callback}) {
   )
 }
 
-export default function Logs({ LogInfos }) {  
+export default function Logs({ LogInfos,callback }) {  
   let date = new Date()
   let formatedDATE = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}-${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
   
@@ -58,6 +58,9 @@ export default function Logs({ LogInfos }) {
   const handleRemove = (val)=> {
     LogsMAP.delete(val)
   }
+  
+  useEffect(() => callback(LogsMAP.size),[LogsMAP.size])
+  
   return (
     <div className='flex flex-col w-full bg-zinc-800 rounded-2xl p-4'>
 
@@ -69,7 +72,7 @@ export default function Logs({ LogInfos }) {
         </div>
       </div>
 
-      <div className={`mt-4 flex flex-col gap-2 transition-all duration-300 ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
+      <div className={`${LogsMAP.size === 0 ? 'items-center'  : ''} mt-4 flex flex-col gap-2 transition-all duration-300 ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
         {Array.from(LogsMAP).map(([date, data]) => (
           <LogsCard
             key={date}
@@ -78,6 +81,7 @@ export default function Logs({ LogInfos }) {
             callback={handleRemove}
           />
         ))}
+        {LogsMAP.size === 0 ? <p className='text-zinc-500'>No Conversations yet...</p> : ''}
       </div>
 
       <button onClick={() => handleShowMore()} className='mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>

@@ -78,6 +78,14 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const [favCount, setfavCount] = useState(0)
+  const favCounter = (count) => {
+    setfavCount(count)
+  }
+  const [logCount, setlogCount] = useState(0)
+  const LogCounter = (count) => {
+    setlogCount(count)
+  }
   return (
     <>
       <div className='h-vh w-dvw bg-[#0A0A0A]' onClick={() => unselect ? setUnselect(false) : setUnselect(true)} >
@@ -109,8 +117,8 @@ function App() {
 
           <nav className={`col-start-2 h-14 z-999`}>
             {ResponsiveTabFlag ? 
-              <BigTabMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
-              : <TabsMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
+              <BigTabMenu logCount={logCount} favCount={favCount} Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
+              : <TabsMenu logCount={logCount} favCount={favCount} Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
             }
           </nav>
 
@@ -131,12 +139,14 @@ function App() {
                 pairs={favonly ? pair : undefined}
                 DATA={rangedata}
                 favToggle={favTog}
+                callback={favCounter}
               />
             </div>
 
             <div className={selectedTab === "LOGS" ? "block" : "hidden"}>
               <Logs
                 LogInfos = {logToggle ? LogInfos : undefined}
+                callback = {LogCounter}
               />
             </div>
           </section>

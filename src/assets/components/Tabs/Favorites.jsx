@@ -37,7 +37,7 @@ function FavoriteCard({DATA, index, callback, favToggle}) {
   )
 }
 
-function Favorites({pairs, DATA,favToggle}) {  
+function Favorites({pairs, DATA,favToggle, callback}) {  
   let CurrencyData = Object.values(DATA)
   const today = CurrencyData?.at(-1)
   const yesterday = CurrencyData?.at(-2)
@@ -75,6 +75,8 @@ function Favorites({pairs, DATA,favToggle}) {
     setFavCount(val => val - 1)
   }
 
+  useEffect(() => callback(FavCount),[FavCount])
+
   return (
     <div className='w-full bg-zinc-800 rounded-2xl p-4'>
       <div className='flex items-baseline justify-between'>
@@ -82,7 +84,7 @@ function Favorites({pairs, DATA,favToggle}) {
         <p className='text-[0.9em] text-zinc-400'>{FavCount} FAVORITES</p>
       </div>
 
-      <div className={`-z-40 mt-4 flex flex-col gap-2 transition-all duration-300 ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
+      <div className={`${tempAry[0] === undefined ? 'items-center'  : ''} -z-40 mt-4 flex flex-col gap-2 transition-all duration-300 scrollbar-none ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>
         {tempAry.map((notUsed, index) => {
           return <FavoriteCard
             key={index}
@@ -92,6 +94,7 @@ function Favorites({pairs, DATA,favToggle}) {
             favToggle={favToggle}
           />
         })}
+        {tempAry[0] === undefined ? <p className='text-zinc-500'>No Favorites yet...</p> : ''}
       </div>
 
       <button onClick={() => handleShowMore()} className='mt-4 ml-auto mr-auto h-10 w-40 rounded-2xl flex justify-center items-center gap-2'>
