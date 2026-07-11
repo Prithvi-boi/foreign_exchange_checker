@@ -37,7 +37,7 @@ function FavoriteCard({DATA, index, callback, favToggle}) {
   )
 }
 
-function Favorites({pairs, DATA,favToggle, callback}) {  
+function Favorites({pairs, DATA,favToggle, callback,AlreadyAddedCallback}) {  
   let CurrencyData = Object.values(DATA)
   const today = CurrencyData?.at(-1)
   const yesterday = CurrencyData?.at(-2)
@@ -50,7 +50,10 @@ function Favorites({pairs, DATA,favToggle, callback}) {
   useEffect(() => {
     if (!pairs) return
     const key = `${pairs[0]}-${pairs[1]}`
-    if (favPairRef.current.has(key)) return   // real, synchronous check
+    if (favPairRef.current.has(key)){ 
+      AlreadyAddedCallback()
+      return
+    }
     favPairRef.current.add(key)  
     setFavPairList(prev => {
       const newSet = new Set(prev);

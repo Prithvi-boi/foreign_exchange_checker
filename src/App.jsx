@@ -86,12 +86,17 @@ function App() {
   const LogCounter = (count) => {
     setlogCount(count)
   }
+
+  const [AlreadyAdded, setAlreadyAdded] = useState(false)
+  const AlreadyAddedCallback = ()=> {
+      setAlreadyAdded(true)
+  }
   return (
     <>
       <div className='h-vh w-dvw bg-[#0A0A0A]' onClick={() => unselect ? setUnselect(false) : setUnselect(true)} >
 
         <header>
-          <div className='flex items-center justify-between shrink-0 p-3'>
+          <div className='flex items-center justify-between shrink-0 px-6 py-3'>
             <img className='h-6' src={logo} alt="App-logo" />
             <div className='min-w-0 text-[#9D9D9D] text-[0.7rem] truncate'>{total_Currencies} CURRENCIES · EOD · ECB DATA</div>
           </div>
@@ -113,6 +118,7 @@ function App() {
             ratesOftoday={todaysData} // 4. sending rates of today to CheckRateBox- props1
             CallbackFrom_Cklayout={handleCurrencyChange}
             CallbackForLOGS={handleLogClick}
+            AlreadyAddedFav = {AlreadyAdded}
           />
 
           <nav className={`col-start-2 h-14 z-999`}>
@@ -140,6 +146,7 @@ function App() {
                 DATA={rangedata}
                 favToggle={favTog}
                 callback={favCounter}
+                AlreadyAddedCallback={AlreadyAddedCallback}
               />
             </div>
 

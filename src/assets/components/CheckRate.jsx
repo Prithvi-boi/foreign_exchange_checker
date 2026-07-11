@@ -7,26 +7,26 @@ import { flags } from "./Dropdown";
 //-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
 
 function CheckRate(
-    { 
+    {
         title,
         num_color = 'white',
-        receiveAmtData, 
+        receiveAmtData,
         rateData, // X
         receiveAmt, // X
 
         // Goes to Dropbox
-        default_currency, 
+        default_currency,
         default_flag,
         default_BASE,
-        countriesList, 
-        countryNames, 
-        unselected, 
-        exchangeVar, 
-        CallbackTo_CkRateLayout, 
+        countriesList,
+        countryNames,
+        unselected,
+        exchangeVar,
+        CallbackTo_CkRateLayout,
     }) {
 
     let inputNum = useRef(null)
-    const Callbackfrom_Dropbox = (BASE) => {CallbackTo_CkRateLayout(BASE)}  // [5]> send selected currency (BASE) to Check Rate Layout
+    const Callbackfrom_Dropbox = (BASE) => { CallbackTo_CkRateLayout(BASE) }  // [5]> send selected currency (BASE) to Check Rate Layout
 
     return (
         <>
@@ -41,13 +41,13 @@ function CheckRate(
 
                     {/* Dropdown + Search */}
                     <Dropdown
-                        default_flag     ={default_flag}
-                        default_currency ={default_currency}
-                        countriesList    ={countriesList}
-                        countriesNames   ={countryNames}
-                        unselected       ={unselected}
-                        default_BASE     ={default_BASE} // [2]> send default base to Dropbox
-                        exchangeVar      ={exchangeVar}
+                        default_flag={default_flag}
+                        default_currency={default_currency}
+                        countriesList={countriesList}
+                        countriesNames={countryNames}
+                        unselected={unselected}
+                        default_BASE={default_BASE} // [2]> send default base to Dropbox
+                        exchangeVar={exchangeVar}
                         CallbackTo_CheckRate={Callbackfrom_Dropbox}
                     />
                 </div>
@@ -56,13 +56,13 @@ function CheckRate(
     )
 }
 
-function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, CallbackFrom_Cklayout,CallbackForLOGS  }) {
+function CheckRate_layout({ ratesOftoday, countries, countryNames, unselected, CallbackFrom_Cklayout, CallbackForLOGS, AlreadyAddedFav }) {
     let [currentBASE, setcurrentBASE] = useState('USD')
     let [currentRCVE, setcurrentRCVE] = useState('INR') // RCVE means Reciever currency
     // console.log(currentBASE, currentRCVE);
-    
-    let [exchange, setexchange]     = useState(false)
-    let [receiveAmt, setreceiveAmt] = useState(null)    
+
+    let [exchange, setexchange] = useState(false)
+    let [receiveAmt, setreceiveAmt] = useState(null)
 
     const Reciever_rate = ratesOftoday?.rates?.[currentRCVE]; // get rate of receiver country
     const amount = Number(receiveAmt);
@@ -76,29 +76,42 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
 
     const receiveAmtData = (amt) => {
         setreceiveAmt(Number(amt))
-        CallbackFrom_Cklayout(currentBASE,currentRCVE,amt, false)
+        CallbackFrom_Cklayout(currentBASE, currentRCVE, amt, false)
     }
     // [6]> send selected currency (BASE) to App and Changes its own BASE
     const handleBasetoApp = (currency) => {
         setcurrentBASE(currency)
-        CallbackFrom_Cklayout(currency, currentRCVE,receiveAmt, false)
-    }; 
+        CallbackFrom_Cklayout(currency, currentRCVE, receiveAmt, false)
+    };
     const getRCVEfromDropBOX = (currency) => {
-        CallbackFrom_Cklayout(currentBASE, currency,receiveAmt, false)
+        CallbackFrom_Cklayout(currentBASE, currency, receiveAmt, false)
         setcurrentRCVE(currency)
     };
 
-    const handleFavclick = ()=>{
-        CallbackFrom_Cklayout(currentBASE,currentRCVE,receiveAmt, true)
+    const [popupFlag, setpopupFlag] = useState(false)
+    const handleFavclick = () => {
+        CallbackFrom_Cklayout(currentBASE, currentRCVE, receiveAmt, true)
+        setpopupFlag(true);
+
+        setTimeout(() => {
+            setpopupFlag(false);
+        }, 1000);
     }
-    const hangleLogClick = ()=>{
-        CallbackForLOGS(currentBASE,currentRCVE,amount,convertedAmount)
+
+    const [LogpopupFlag, setLogpopupFlag] = useState(false)
+    const hangleLogClick = () => {
+        CallbackForLOGS(currentBASE, currentRCVE, amount, convertedAmount)
+        setLogpopupFlag(true);
+
+        setTimeout(() => {
+            setLogpopupFlag(false);
+        }, 1000);
     }
 
     return (
         <>
-        <h1 className='col-start-2 mt-4 text-xl  '>CHECK THE RATE</h1>
-        <div className='col-start-2 w-full grid grid-cols-[0.9rem_1fr_0.9rem] grid-rows-[2fr_2.5rem_6rem] sm:grid-rows-[2fr_2.5rem_3rem]  p-3 bg-[#171719] rounded-2xl'>
+            <h1 className='col-start-2 mt-4 text-xl  '>CHECK THE RATE</h1>
+            <div className='col-start-2 w-full grid grid-cols-[0.9rem_1fr_0.9rem] grid-rows-[2fr_2.5rem_6rem] sm:grid-rows-[2fr_2.5rem_3rem]  p-3 bg-[#171719] rounded-2xl'>
                 <section className="row-start-1 col-start-2 flex flex-col sm:flex-row items-center gap-5">
                     <CheckRate
                         title={"SEND"}
@@ -139,18 +152,30 @@ function CheckRate_layout({ratesOftoday, countries, countryNames, unselected, Ca
                 <hr className='m-auto row-start-2 col-start-2 h-[0.1px] w-full border-[#222222] border-dashed border-t-2' />
                 <section className="sm:flex-row flex flex-col justify-center items-center gap-4 row-start-3 col-start-2">
                     <p className='text-[0.8rem]'> 1 {currentBASE} = {Reciever_rate || 1} {currentRCVE}</p>
-                    <div className='sm:ml-auto flex gap-4'>
-                        <button onClick={() => handleFavclick()} className='cursor-pointer flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
-                            <img src={starFilledIcon} alt="star emoji" />
-                            <p className='text-[0.8rem]'>FAVORITED</p>
-                        </button>
+                    <div className='relative sm:ml-auto flex gap-4'>
+                        <div>
+                            <button onClick={() => handleFavclick()} className='cursor-pointer flex gap-2 items-center justify-evenly p-3 h-10 font-extrabold text-black bg-[#CEF739] rounded-lg'>
+                                <img src={starFilledIcon} alt="star emoji" />
+                                <p className='text-[0.8rem]'>FAVORITED</p>
+                            </button>
+                            <div>
+                                <div className={`${!popupFlag ? '-scale-x-0 -scale-y-0' : ''} transition-all absolute w-10 h-10 rotate-45 ml-10 bg-lime-500`}></div>
+                                <div className={`${!popupFlag ? '-scale-x-0' : ''} z-1001 transition-all absolute rounded-lg w-35 h-10 mt-2 -ml-3 bg-[#CEF739] font-bold flex justify-center items-center text-sm text-lime-800`}>{AlreadyAddedFav ? 'ALREADY' : ''} ADDED</div>
+                            </div>
+                        </div>
 
-                        <button onClick={() => hangleLogClick()} className='cursor-pointer flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
-                            <p className='text-[0.8rem]'>LOG CONVERSATION</p>
-                        </button>
+                        <div>
+                            <button onClick={() => hangleLogClick()} className='cursor-pointer flex items-center p-3 h-10 outline-1 outline-white rounded-lg'>
+                                <p className='text-[0.8rem]'>LOG CONVERSATION</p>
+                            </button>
+                            <div>
+                                <div className={`${!LogpopupFlag ? '-scale-x-0 -scale-y-0' : ''}  transition-all absolute w-10 h-10 rotate-45 ml-10 bg-zinc-900 border-2 border-white`}></div>
+                                <div className={`${!LogpopupFlag ? '-scale-x-0' : ''} z-1001 transition-all absolute rounded-lg w-35 h-10 mt-2 -ml-3 bg-zinc-900 border-2 border-white text-white font-bold flex justify-center items-center text-sm`}> ADDED</div>
+                            </div>
+                        </div>
                     </div>
                 </section>
-        </div>
+            </div>
         </>
     )
 }
