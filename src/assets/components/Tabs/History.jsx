@@ -102,7 +102,7 @@ export default function History({rangedata,Currency_pairs, callbackFrom_History}
 
   return (
     <div className='w-full grid grid-cols-1 gap-4'>
-      <div className='grid grid-cols-2 grid-rows-[5em_5em] gap-3'>
+      <div className='grid sm:grid-rows-1 sm:grid-cols-4 grid-cols-2 grid-rows-[5em_5em] gap-3'>
         <Card Heading={'OPEN'} Content={open} />
         <Card Heading={'LAST'} Content={close}/>
         <Card Heading={'CHANGE'} Content={`${DatafromCharts ? (differnce > 0 ? '+' : '') : ''} ${DatafromCharts ? `${isDiffNan ? 0 : differnce.toFixed(4)}` : ''}`} Contentcolor={DatafromCharts ? differnce > 0 ? 'text-green-500': 'text-red-500' : ''} />
@@ -127,36 +127,26 @@ function Card({ Heading, Contentcolor = 'text-white', Content }) {
 function HistoryChartTabs({callback}) {
   const chartOption = ['1D', '1W', '1M', '3M', '1Y', '5Y']
   const [btnActive, setbtnActive] = useState('1D')
-  
-  const firstBtnRef = useRef(null);
-  const containerRef = useRef(null);
-  const [highLightProp, sethighLightProp] = useState({
-    left: 0,
-    width: 0,
-    height: 0
-  });
+  const [btnWidth, setBtnwidth] = useState(60)
+  const [btnOffsetLEFT, setbtnOffsetLEFT] = useState(0)
 
-  useEffect(() => {
-    const btnRect = firstBtnRef.current.getBoundingClientRect();
-    const containerRect = containerRef.current.getBoundingClientRect();
-    callback(btnActive)
-    
-    sethighLightProp({left: null,width: btnRect.width,height: btnRect.height});
-  }, []);
-
-  const handleonClick = (btnId, posx) => {
+  const handleonClick = (btnId, left, width) => {
     setbtnActive(btnId)
     callback(btnId)
-    sethighLightProp({ left: posx.left, width: posx.width , height: posx.height })
+    setBtnwidth(width)
+    setbtnOffsetLEFT(left)
   }
-
+  
   return (
     <div className='row-start-2 w-full grid grid-rows-[3em] grid-cols-1 gap-4 '>
-      <div ref={containerRef} className='w-[calc(100%-2em)] flex items-center bg-zinc-900 rounded-lg'>
+      <div className='relative w-auto sm:w-fit grid grid-cols-6 bg-zinc-900 rounded-lg'>
         {chartOption.map((option,i) => {
-          return <button ref={i === 0 ? firstBtnRef : null} key={i} onClick={(e) => { handleonClick(e.target.innerText, e.currentTarget.getBoundingClientRect()) }} className={`${option == btnActive ? 'text-white' : 'text-zinc-700'} text-[0.8rem] h-full w-15 rounded-l transition-colors duration-600 ease-out`}>{option}</button>
+          return <button key={i} 
+          onClick={(e) => { 
+            handleonClick(e.target.innerText,e.target.offsetLeft,e.target.offsetWidth) 
+          }} className={`${option == btnActive ? 'text-white' : 'text-zinc-700'} text-[0.8rem] h-full w-15 rounded-l transition-colors duration-600 ease-out`}>{option}</button>
         })}
-        <div className={` bg-zinc-700 opacity-60 absolute transition-[left] duration-500 rounded-lg`} style={{ left: highLightProp.left ? highLightProp.left : 20, width: highLightProp.width, height: highLightProp.height }}></div>
+      <div style={{width: `${btnWidth}px`, left: btnOffsetLEFT}} className={`h-full bg-zinc-700 opacity-60 absolute transition-[left] duration-500 rounded-lg`}></div>
       </div>
     </div>
   )

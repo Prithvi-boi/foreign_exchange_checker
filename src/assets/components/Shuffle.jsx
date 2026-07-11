@@ -15,8 +15,8 @@ function Shuffle({ex, callback, base, rcve}) {
         callback(base,rcve)
     }
     return(
-        <div onClick={() => handleExchange()} className='flex flex-col justify-evenly p-3 h-12 w-12 sm:w-30 sm:h-15 bg-[#202022] border-2 border-[#2E2E2E] rounded-lg'>
-            <img src={width > 640 ? exchangeHorizontalIcon : exchangeVerticalIcon} className="sm:h-7" alt="exchange vertical icon" />
+        <div onClick={() => handleExchange()} className='flex flex-col justify-evenly p-3 h-12 w-12 sm:w-25 sm:h-12 bg-[#202022] border-2 border-[#2E2E2E] rounded-lg'>
+            <img src={width > 640 ? exchangeHorizontalIcon : exchangeVerticalIcon} className="sm:h-5" alt="exchange vertical icon" />
         </div>
     )
 }

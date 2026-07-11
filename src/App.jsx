@@ -6,6 +6,7 @@ import logo from "/src/assets/images/logo.svg"
 import LiveMarkets from './assets/components/LiveMarkets'
 import CheckRate_layout from './assets/components/CheckRate'
 import TabsMenu from './assets/components/Tabs/TabsMenu'
+import BigTabMenu from './assets/components/Tabs/BigTabMenu'
 import History from './assets/components/Tabs/History'
 import Compare from './assets/components/Tabs/Compare'
 import Favorites from './assets/components/Tabs/Favorites'
@@ -66,6 +67,17 @@ function App() {
     setlogToggle(true)
   }
 
+  const [ResponsiveTabFlag, setResponsiveTabFlag] = useState(false)
+  useEffect(() => {
+    const handleResize = () => {
+      setResponsiveTabFlag(window.innerWidth > 640);
+    };
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <div className='h-vh w-dvw bg-[#0A0A0A]' onClick={() => unselect ? setUnselect(false) : setUnselect(true)} >
@@ -95,8 +107,11 @@ function App() {
             CallbackForLOGS={handleLogClick}
           />
 
-          <nav className='col-start-2 h-14 z-999'>
-            <TabsMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
+          <nav className={`col-start-2 h-14 z-999`}>
+            {ResponsiveTabFlag ? 
+              <BigTabMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
+              : <TabsMenu Callback={CallbackFrom_Tabs} TabOptions={options} default_tabs={selectedTab} />
+            }
           </nav>
 
           <section className='col-start-2'>

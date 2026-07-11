@@ -128,7 +128,7 @@ function Dropdown(
 
     //------------------------------------------------------ Returns
     return (
-        <div className="col-start-3 m-auto relative">
+        <div className="col-start-2 m-auto relative">
 
             <button onClick={() => ToggleDropdown()} className="w-full flex gap-2 items-center justify-evenly mr-2 px-2 py-2 text-white bg-zinc-900 border border-zinc-700 rounded">
                 <img className="h-5 rounded-full" src={selected_flag ? selected_flag : default_flag} alt="country flag" />
@@ -137,7 +137,7 @@ function Dropdown(
             </button>
 
             {dropDown &&
-                <div id="Dropdown" className="z-999 absolute mt-1 p-2 h-90 w-70 text-zinc-500 bg-zinc-800 border-2 border-zinc-700 -ml-45 rounded-xl">
+                <div id="Dropdown" className="z-1000 absolute mt-1 p-2 h-90 w-70 text-zinc-500 bg-zinc-800 border-2 border-zinc-700 -ml-45 sm:-ml-40 rounded-xl">
                     <div id="search" className="flex gap-3 p-1 pl-3 bg-zinc-900 border-2 border-zinc-600 rounded-lg">
                         <img src={searchIcon} alt="search Icon" />
                         <input onClick={(e) => e.stopPropagation()} onChange={(e) => {handleOnChange(e.target.value)}} className="w-full outline-0" type="text" name="search" id="search" placeholder="Search countries" />

@@ -33,11 +33,11 @@ function CheckRate(
             <div className='grid-cols-1 grid-rows-[1fr_3fr] grid p-3 h-30 w-full bg-[#202022] border-2 border-[#2E2E2E] rounded-2xl'>
                 <h3 className='text-[#C6C6C6]'>{title}</h3>
 
-                <div className='grid grid-cols-[1fr_1rem_8rem]'>
+                <div className='grid grid-cols-[auto_8rem] sm:grid-cols-[auto_6rem]'>
 
                     {/* Input Number box */}
-                    {title == 'SEND' && <input placeholder="0.00" onChange={(e) => { receiveAmtData(e.target.value) }} className="mr-auto my-auto w-full text-4xl outline-0" type="number" onWheel={(e) => (e) => e.currentTarget.blur()} />}
-                    {title == 'RECEIVE' && <div style={{ color: num_color }} className="mr-auto my-auto overflow-x-scroll overflow-y-hidden w-full text-4xl scrollbar-none">{receiveAmtData}</div>}
+                    {title == 'SEND' && <input placeholder="0.00" onChange={(e) => { receiveAmtData(e.target.value) }} className="sm:text-2xl mr-auto my-auto w-full text-4xl outline-0" type="number" onWheel={(e) => (e) => e.currentTarget.blur()} />}
+                    {title == 'RECEIVE' && <div style={{ color: num_color }} className="sm:text-2xl mr-auto my-auto overflow-x-scroll overflow-y-hidden w-full text-4xl scrollbar-none">{receiveAmtData}</div>}
 
                     {/* Dropdown + Search */}
                     <Dropdown
