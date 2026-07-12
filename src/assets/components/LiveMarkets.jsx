@@ -73,7 +73,7 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
       const ratesList = await APIbase_response.json();
       
       const rates_range = Object.values(ratesList.rates) 
-      if (rates_range.length != 2) {
+      if (rates_range.length < 2) {
         setIncreser(prev => prev + 1)
         return
       }

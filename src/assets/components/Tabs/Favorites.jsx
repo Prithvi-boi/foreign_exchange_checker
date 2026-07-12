@@ -48,7 +48,7 @@ function Favorites({pairs, DATA,favToggle, callback,AlreadyAddedCallback}) {
     return stored ? JSON.parse(stored) : [];
   })
   
-  useEffect(() => {
+  useEffect(() => {    
     localStorage.setItem("favData", JSON.stringify(tempAry));
   }, [tempAry]);
 
@@ -68,6 +68,17 @@ function Favorites({pairs, DATA,favToggle, callback,AlreadyAddedCallback}) {
       newSet.add(key);
       return newSet;
     })
+
+    const stored = JSON.parse(localStorage.getItem("favData"));
+    const s = stored.map(val => val[0])
+    for (let i = 0; i < s.length; i++) {
+      const element = s[i];   
+      if (element[0] == pairs[0] && element[1] == pairs[1]) {
+        AlreadyAddedCallback()
+        return
+      }    
+    }
+    
     if (FavPairlist.has(key)) return
     if (!today || !yesterday) yesterday = today 
     setTempAry(prev => [...prev, [pairs,today?.[pairs[1]] , (((yesterday[pairs[1]] - today[pairs[1]]) / yesterday[pairs[1]])*100).toFixed(4)]])
