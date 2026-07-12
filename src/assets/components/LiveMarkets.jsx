@@ -26,6 +26,7 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
     "5Y": 5,
   };
 
+  const [startDateincreser , setIncreser] = useState(1)
   function getDateRange(range) {
     const end = new Date(today);
     const start = new Date(today);    
@@ -33,7 +34,7 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
     switch (range) {
       case "1D":
         end.setDate(end.getDate() - 1);
-        start.setDate(start.getDate() - 2);
+        start.setDate(start.getDate() - startDateincreser);
         break;
 
       case "1W":
@@ -68,11 +69,16 @@ function LiveMarkets({BASE, getRatesFromMarket,tabID}) {
   useEffect(() => {
     async function getMarkets() {
       const APIbase_response = await fetch(`https://api.frankfurter.dev/v1/${start}..${end}?base=${BASE}`);
-
-      const ratesList = await APIbase_response.json();
-      // console.log(ratesList);
       
-      const rates_range = Object.values(ratesList.rates)   
+      const ratesList = await APIbase_response.json();
+      
+      const rates_range = Object.values(ratesList.rates) 
+      if (rates_range.length != 2) {
+        setIncreser(prev => prev + 1)
+        return
+      }
+      
+        
       const data = {rates : rates_range[rates_range.length - 1]}  
 
       const markets = popular_pairs.map((pair) => {
