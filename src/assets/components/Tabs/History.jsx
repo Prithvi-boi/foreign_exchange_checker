@@ -38,7 +38,7 @@ function HistoryCharts({pairs,rangedata,callbackdata}) {
     return {
     labels: labels,
     datasets: [{
-      label: 'My First Dataset',
+      label: 'Currency',
       data: Object.values(rangedata).map((val) => val[pairs[1]]),
       borderColor: "#CEF739",      // Line color
       borderWidth: 3,               // Thickness
@@ -85,7 +85,14 @@ function HistoryCharts({pairs,rangedata,callbackdata}) {
         <p className='text-zinc-500'>Last · Date · CET</p>
       </div>
       <div className='relative h-full w-full rounded-2xl'>
-        <Line data={data} options={options} />
+        {
+          Object.keys(rangedata).length > 1 ?
+          <Line data={data} options={options} /> :
+          <div className='flex flex-col gap-4 justify-center items-center h-full'>
+            <h3 className='text-xl text-zinc-400'>No chart data available</h3>
+            <p className='text-sm text-zinc-600'>We couldn't load rate history for {pairs[0]}/{pairs[1]} right now. This usually clears up in a minute.</p>
+          </div>
+        }
       </div>
     </div>
   )
@@ -104,7 +111,7 @@ export default function History({rangedata,Currency_pairs, callbackFrom_History}
     <div className='w-full grid grid-cols-1 gap-4'>
       <div className='grid sm:grid-rows-1 sm:grid-cols-4 grid-cols-2 grid-rows-[5em_5em] gap-3'>
         <Card Heading={'OPEN'} Content={open} />
-        <Card Heading={'LAST'} Content={close}/>
+        <Card Heading={'LAST'} Content={close || 'Not Available'}/>
         <Card Heading={'CHANGE'} Content={`${DatafromCharts ? (differnce > 0 ? '+' : '') : ''} ${DatafromCharts ? `${isDiffNan ? 0 : differnce.toFixed(4)}` : ''}`} Contentcolor={DatafromCharts ? differnce > 0 ? 'text-green-500': 'text-red-500' : ''} />
         <Card Heading={'% CHANGE'} Content={`${DatafromCharts ? (differnce > 0 ? "▲" : "▼") : ''} ${DatafromCharts ? (differnce > 0 ? '+' : '') : ''}${DatafromCharts ? (isDiffNan ? 0 : (((differnce)/open)*100).toFixed(2)) : ''}`} Contentcolor={DatafromCharts ? differnce > 0 ? 'text-green-500': 'text-red-500' : ''} />
       </div>

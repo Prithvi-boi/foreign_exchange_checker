@@ -118,7 +118,7 @@ function App() {
             ratesOftoday={todaysData} // 4. sending rates of today to CheckRateBox- props1
             CallbackFrom_Cklayout={handleCurrencyChange}
             CallbackForLOGS={handleLogClick}
-            AlreadyAddedFav = {AlreadyAdded}
+            AlreadyAddedFav={AlreadyAdded}
           />
 
           <nav className={`col-start-2 h-14 z-999`}>

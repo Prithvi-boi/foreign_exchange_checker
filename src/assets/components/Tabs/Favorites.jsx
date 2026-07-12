@@ -22,7 +22,7 @@ function FavoriteCard({DATA, index, callback, favToggle}) {
     <div style={{transform : width ? 'scaleX(1)' : 'scaleX(0)'}} className='transition-all duration-300 overflow-hidden grid grid-cols-[auto_5em_3em] py-2 px-1 bg-zinc-700 border-2 border-zinc-600 rounded-lg'>
 
       <div className='ml-3 place-items-start flex flex-col justify-center'>
-        <h6>{DATA[index][0][0]} {'->'} {DATA[index][0][1]}</h6>
+        <h6>{DATA[index][0]?.[0]} {'->'} {DATA[index][0]?.[1]}</h6>
       </div>
 
       <div className='place-items-end flex flex-col justify-center gap-1 mr-2'>
@@ -40,11 +40,19 @@ function FavoriteCard({DATA, index, callback, favToggle}) {
 function Favorites({pairs, DATA,favToggle, callback,AlreadyAddedCallback}) {  
   let CurrencyData = Object.values(DATA)
   const today = CurrencyData?.at(-1)
-  const yesterday = CurrencyData?.at(-2)
-  const [tempAry, setTempAry] = useState([])
-  const [FavPairlist, setFavPairList] = useState(new Set())
+  let yesterday = CurrencyData?.at(-2)
   const [FavCount, setFavCount] = useState(0)
+  // const [newMap, setnewMap] = useState(new Map())
+  const [tempAry, setTempAry] = useState(() => {
+    const stored = localStorage.getItem("favData");
+    return stored ? JSON.parse(stored) : [];
+  })
+  
+  useEffect(() => {
+    localStorage.setItem("favData", JSON.stringify(tempAry));
+  }, [tempAry]);
 
+  const [FavPairlist, setFavPairList] = useState(new Set())
   const favPairRef = useRef(new Set())
 
   useEffect(() => {
@@ -61,6 +69,7 @@ function Favorites({pairs, DATA,favToggle, callback,AlreadyAddedCallback}) {
       return newSet;
     })
     if (FavPairlist.has(key)) return
+    if (!today || !yesterday) yesterday = today 
     setTempAry(prev => [...prev, [pairs,today?.[pairs[1]] , (((yesterday[pairs[1]] - today[pairs[1]]) / yesterday[pairs[1]])*100).toFixed(4)]])
     setFavCount(val => val + 1)
   }, [pairs])
@@ -75,16 +84,17 @@ function Favorites({pairs, DATA,favToggle, callback,AlreadyAddedCallback}) {
   const removeFav = (i,pair) => {
     FavPairlist.delete(pair)
     tempAry.splice(i,1)
+    localStorage.setItem("favData", JSON.stringify(tempAry));
     setFavCount(val => val - 1)
   }
 
-  useEffect(() => callback(FavCount),[FavCount])
+  useEffect(() => callback(tempAry.length),[FavCount])
 
   return (
     <div className='w-full bg-zinc-800 rounded-2xl p-4'>
       <div className='flex items-baseline justify-between'>
         <h4 className='text-[0.9em]'>PINNED PAIRS</h4>
-        <p className='text-[0.9em] text-zinc-400'>{FavCount} FAVORITES</p>
+        <p className='text-[0.9em] text-zinc-400'>{tempAry.length} FAVORITES</p>
       </div>
 
       <div className={`${tempAry[0] === undefined ? 'items-center'  : ''} -z-40 mt-4 flex flex-col gap-2 transition-all duration-300 scrollbar-none ${!toggleMore ? 'max-h-80 overflow-scroll' : 'max-h-[1000rem]'}`}>

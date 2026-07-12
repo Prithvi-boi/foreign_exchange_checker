@@ -14,7 +14,7 @@ function CompareCard({flagimg,currencyAbre,currencyName,todaysRate,inputVal, cal
     setFavToggle(!FavToggle)
   }
   return(
-    <div className='grid grid-cols-[3em_auto_4em_3em] py-2 px-1 bg-zinc-700 border-2 border-zinc-600 rounded-lg'>
+    <div className='hover:border-2 hover:border-lime-400 grid grid-cols-[3em_auto_4em_3em] py-2 px-1 bg-zinc-700 border-2 border-zinc-600 rounded-lg'>
       
       <div className='p-2'>
         <img className='rounded-full border-[0.1em] border-zinc-800' src={flagimg} alt='flagimg' />

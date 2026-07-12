@@ -5,7 +5,7 @@ import DeleteIcon from "/src/assets/images/icon-delete.svg"
 function LogsCard({DATE, DATA, callback}) {
   // console.log(DATA);
   if (!DATA[0]) return
-  
+
   const [del , setDel] = useState(false)
   const deleteMycomp = () => {
     setDel(true)
@@ -14,7 +14,7 @@ function LogsCard({DATE, DATA, callback}) {
   if (del) return
 
   return(
-    <div className='grid grid-cols-[auto_4em_3em] py-2 px-2 bg-zinc-700 border-2 border-zinc-600 rounded-lg'>
+    <div className='hover:border-2 hover:border-lime-400  grid grid-cols-[auto_4em_3em] py-2 px-2 bg-zinc-700 border-2 border-zinc-600 rounded-lg'>
       <div className='place-items-start flex flex-col justify-center gap-1 mr-2'>
         <p className='text-[0.6em] text-zinc-400'>{DATE}</p>
         <h6>{`${DATA[0]} -> ${DATA[1]}`}</h6>
@@ -36,8 +36,14 @@ export default function Logs({ LogInfos,callback }) {
   let date = new Date()
   let formatedDATE = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}-${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
   
-  const [LogsMAP, setLogsMAP] = useState(new Map())
-  // console.log(LogsMAP);
+  const [LogsMAP, setLogsMAP] = useState(() => {
+    const stored = localStorage.getItem("Data");
+    return stored ? new Map(JSON.parse(stored)) : new Map();
+  });
+
+  useEffect(() => {
+    localStorage.setItem("Data",JSON.stringify([...LogsMAP]));
+  }, [LogsMAP]);
   
   useEffect(()=>{
     if (!LogInfos) return
@@ -45,7 +51,7 @@ export default function Logs({ LogInfos,callback }) {
       let map = new Map(prev)
       map.set(formatedDATE, LogInfos)
       return map
-    })  
+    })      
   },[LogInfos])  
 
   const [toggleMore, setToggleMore] = useState(false)
@@ -57,6 +63,18 @@ export default function Logs({ LogInfos,callback }) {
 
   const handleRemove = (val)=> {
     LogsMAP.delete(val)
+    const stored = localStorage.getItem("Data");
+    const newMap = new Map(JSON.parse(stored))
+    newMap.delete(val)
+    localStorage.setItem("Data",JSON.stringify([...newMap]));
+  }
+
+  const handleClearAll = (val)=> {
+    LogsMAP .clear()
+    const stored = localStorage.getItem("Data");
+    const newMap = new Map(JSON.parse(stored))
+    newMap.clear()
+    localStorage.setItem("Data",JSON.stringify([...newMap]));
   }
   
   useEffect(() => callback(LogsMAP.size),[LogsMAP.size])
@@ -68,7 +86,7 @@ export default function Logs({ LogInfos,callback }) {
         <h4 >CONVERSION LOG</h4>
         <div className='flex items-center w-full'>
           <p className='text-[0.9em] text-zinc-400'>{LogsMAP.size} LOGGED</p>
-          <button onClick={() => LogsMAP.clear()} className='cursor-pointer  ml-auto p-2 h-10 w-25 rounded-lg border-2 border-zinc-600 bg-zinc-700 text-sm'>CLEAR ALL</button>
+          <button onClick={() => handleClearAll()} className='cursor-pointer  ml-auto p-2 h-10 w-25 rounded-lg border-2 border-zinc-600 bg-zinc-700 text-sm'>CLEAR ALL</button>
         </div>
       </div>
 
